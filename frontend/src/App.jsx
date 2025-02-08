@@ -17,6 +17,9 @@ import Payments from './components/admin/components/pages/payments/Payments'
 import Feedback from './components/admin/components/pages/feedback/Feedbacks'
 import AddBank from './components/admin/components/pages/payments/AddBank'
 import axios from 'axios'
+import HelpDesk from './components/admin/components/pages/helpdesk/Helpdesk'
+import Games from './components/admin/components/pages/games/Games'
+import AddGame from './components/admin/components/pages/games/AddGame'
 
 axios.defaults.withCredentials = true;
 
@@ -41,6 +44,9 @@ function App() {
         <Route path='/admin/payments' element={<Payments />} />
         <Route path='/admin/feedbacks' element={<Feedback />} />
         <Route path='/admin/bank/add' element={<AddBank />} />
+        <Route path='/admin/helpdesk' element={<HelpDesk />} />
+        <Route path='/admin/games' element={<Games />} />
+        <Route path='/admin/games/add' element={<AddGame />} />
       </Routes>
     </Router>
   )

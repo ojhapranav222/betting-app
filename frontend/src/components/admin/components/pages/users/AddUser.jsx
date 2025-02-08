@@ -49,7 +49,6 @@ export default function AddUsers(){
     e.preventDefault();
     
     try {
-      const response = await axios.post("http://localhost:3000/api/user/add", formData);
       navigate("/user");
       alert("User added successfully");
     } catch (error) {
