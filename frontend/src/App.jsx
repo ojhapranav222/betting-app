@@ -20,6 +20,7 @@ import axios from 'axios'
 import HelpDesk from './components/admin/components/pages/helpdesk/Helpdesk'
 import Games from './components/admin/components/pages/games/Games'
 import AddGame from './components/admin/components/pages/games/AddGame'
+import Withdraw from './components/payments/Withdraw'
 
 axios.defaults.withCredentials = true;
 
@@ -33,10 +34,11 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/upcoming' element={<UpcomingGames />} />
         <Route path='/deposit' element={<Deposit />} />
+        <Route path='/withdraw' element={<Withdraw />} />
         <Route path='/profile' element={<Main />} />
         <Route path='/change-password' element={<Password />} />
         <Route path='/transactions' element={<Transactions />} />
-        <Route path='/admin' element={<Dashboard />} />
+        <Route path='/admin/dashboard' element={<Dashboard />} />
         <Route path='/admin/users' element={<User />} />
         <Route path='/admin/user/edit/:id' element={<EditUser />} />
         <Route path='/admin/user/add' element={<AddUsers />} />

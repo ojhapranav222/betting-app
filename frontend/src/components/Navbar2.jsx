@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IoWalletOutline } from "react-icons/io5";
+import axios from 'axios';
 
 function Navbar2() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [dropVisible, setDropVisible] = useState(false);
   const [dropWallet, setDropWallet] = useState(false);
   const [admin, setIsAdmin] = useState(false)
+  const [user, setUser] = useState('U')
 
   function toggleDropDown() {
     setDropVisible(!dropVisible);
@@ -17,24 +19,42 @@ function Navbar2() {
   }
 
   useEffect(() => {
-    const storedIsLoggedIn = localStorage.getItem('isLoggedIn');
+    const storedIsLoggedIn = !!localStorage.getItem('token');
     const storedUsername = localStorage.getItem('username');
 
-    if (storedIsLoggedIn === 'true' && storedUsername === 'admin') {
+    if (storedIsLoggedIn === true && storedUsername === 'admin') {
       setIsLoggedIn(true);
       setIsAdmin(true);
-    } else if (storedIsLoggedIn === 'true') {
+    } else if (storedIsLoggedIn === true) {
       setIsLoggedIn(true);
     }
+  }, [])
+
+  useEffect(() => {
+    async function fetchData() {
+      try{
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/me`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        setUser(response.data.user)
+      } catch(err){
+        console.log(err)
+      }
+    }
+
+    fetchData()
   }, [])
 
   function handleLogout() {
     setIsLoggedIn(false);
     setIsAdmin(false);
-    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('token');
     localStorage.removeItem('username');
   };
 
+  const profileInitial = user?.name ? user.name[0].toUpperCase() : '';
 
 
   return (
@@ -42,7 +62,7 @@ function Navbar2() {
       <Link to='/' className="uppercase font-bold cursor-pointer text-white tracking-wider text-3xl">Nxt</Link>
       {isLoggedIn ? (
         <div className='flex gap-12 items-center'>
-            {admin && (<Link to='/admin' className='text-xl font-semibold text-white cursor-pointer px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Admin</Link>)}
+            {admin && (<Link to='/admin/dashboard' className='text-xl font-semibold text-white cursor-pointer px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Admin</Link>)}
           <Link className='text-xl font-semibold text-white cursor-pointer px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Upcoming Games</Link>
           <Link className='text-xl font-semibold text-white cursor-pointer px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Live Games</Link>
           <div className='text-white text-3xl cursor-pointer' onClick={toggleDrowWallet}>
@@ -50,16 +70,18 @@ function Navbar2() {
           </div>
           {dropWallet && ( 
             <ul className='bg-white absolute top-20 rounded-xl right-24'>
-              <li className='text-black text-sm cursor-pointer p-4 hover:underline'>Balance: 50</li>
+              <li className='text-black text-sm cursor-pointer p-4 hover:underline'>Balance: {user?.balance}</li>
               <li className='text-black text-sm cursor-pointer p-4 hover:underline'>History</li>
               <Link to='/deposit'>
                 <li className='text-black text-sm cursor-pointer p-4 hover:underline'>Deposit</li>
               </Link>
-              <li className='text-black text-sm cursor-pointer p-4 hover:underline'>Withdraw</li>
+              <li className='text-black text-sm cursor-pointer p-4 hover:underline'>
+                <Link to='/withdraw'>Withdraw</Link>
+              </li>
             </ul>
           )}
           <div className='text-white bg-gray-500 text-xl font-semibold h-5 w-5 flex items-center justify-center p-6 rounded-full cursor-pointer' onClick={toggleDropDown}> 
-            <p>U</p> 
+            <p>{profileInitial}</p> 
           </div>
           {dropVisible && ( 
             <ul className='bg-white absolute top-20 rounded-xl right-6'>

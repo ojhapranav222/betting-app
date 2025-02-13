@@ -1,9 +1,30 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar2 from '../Navbar2'
 import Sidebar from './Sidebar'
+import axios from 'axios'
 
 function Password() {
     const [isVerified, setIsVerified] = useState(false)
+    const [user, setUser] = useState(false);
+    const baseUrl = import.meta.env.VITE_BACKEND_URL;
+    const [currPassword, setCurrPasword] = useState('')
+
+    useEffect(() => {
+        async function fetchData() {
+            const response = await axios.get(`${baseUrl}/api/v1/user/me`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            setUser(response.data.user)
+        }
+        fetchData();
+    })
+
+    async function handleVerify(){
+        alert('Cannot verify at the moment')
+    }
+
   return (
     <div className="relative w-full h-screen overflow-hidden" style={{background: 'linear-gradient(135deg, #0D47A1, #1565C0, #2196F3, #43A047)'}}>
         <div className='bg-black absolute h-screen w-screen opacity-20'></div>
@@ -20,7 +41,7 @@ function Password() {
                         <div className='flex flex-col'>
                             <h3 className='font-semibold text-lg mb-2'>E-mail</h3>
                             <div className='bg-gray-100 text-black p-4 border-2 border-black rounded-lg'>
-                            <p>pansy12@gmail.com</p>
+                            <p>{user ? user.email : 'Loading email...'}</p>
                             </div>
                         </div>
 
@@ -33,7 +54,10 @@ function Password() {
                                     placeholder='Your current password' 
                                     className='p-4 w-full border-2 border-black rounded-lg'
                                 />
-                                <button className='ml-4 p-4 text-white bg-[#0d99ff] rounded-md hover:bg-[#0066cc] transition-all duration-200'>
+                                <button 
+                                    className='ml-4 p-4 text-white bg-[#0d99ff] rounded-md hover:bg-[#0066cc] transition-all duration-200'
+                                    onClick = {handleVerify}    
+                                >
                                     {isVerified ? 'Lock' : 'Verify'}
                                 </button>
                             </div>

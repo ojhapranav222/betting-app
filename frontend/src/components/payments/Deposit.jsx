@@ -6,6 +6,7 @@ function Deposit() {
   const [showPopup, setShowPopup] = useState(false);
   const [primaryBankDetails, setPrimaryBankDetails] = useState(null);
   const [screenshot, setScreenshot] = useState(null);
+  const baseUrl = import.meta.env.VITE_BACKEND_URL
 
   // Retrieve primary bank details from localStorage
   useEffect(() => {

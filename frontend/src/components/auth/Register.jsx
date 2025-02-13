@@ -16,11 +16,20 @@ function Register() {
     const navigate = useNavigate();
     const [password, setPassword] = useState('');
     const [errorPassword, setErrorPassword] = useState('');
-    const baseUrl = 'http://localhost:4000/api/v1/user'
+    const baseUrl = import.meta.env.VITE_BACKEND_URL
 
     const cleanedFName = fName.trim().replace(/\s+/g, ' ').toLowerCase().replace(/^./, (str) => str.toUpperCase());
     const cleanedLName = lName.trim().replace(/\s+/g, ' ').toLowerCase().replace(/^./, (str) => str.toUpperCase());
     const fullName = `${cleanedFName} ${cleanedLName}`
+
+    const formData = {
+      email,
+      name: fullName,
+      phone,
+      pincode: pinCode,
+      state,
+      password
+  }
 
     async function handleSubmit(e){
         e.preventDefault();
@@ -50,22 +59,17 @@ function Register() {
         return;
         }
 
-        try{
-            const response = await axios.post(`${baseUrl}/register`, {
-                email,
-                name: fullName,
-                mobileNumber: phone,
-                pincode: pinCode,
-                state,
-                password
-            })
+        console.log('form submit clicked')
 
-            navigate('/congrats')
+        try{
+
+            const response = await axios.post(`${baseUrl}/api/v1/user/register`, formData)
+            console.log(formData)
+            navigate('/login')
         } catch (err) {
             console.log(err);
         }
     }
-
 
   return (
     <div className='h-screen w-screen flex items-center justify-around bg-red-950'>
@@ -84,75 +88,78 @@ function Register() {
         </div>
         <div className='relative flex flex-col items-end justify-around h-screen'>
             <div className='flex flex-col items-center -mt-12'>
-                <img src="/register.png" alt="" className='h-80 z-10' />
+              <img src="/register.png" alt="" className='h-64 relative -top-4 z-10' />
                 
-                <form className='rounded-3xl' onSubmit={handleSubmit}> 
-      <SpotlightCard 
-        className="border border-white px-20 pt-12 rounded-lg -mt-28 flex flex-col gap-6" 
-        spotlightColor="rgba(255, 0, 0, 0.2)"
-      >
-        <div className='flex gap-4'>
-          <input 
-            type="text" 
-            placeholder='First Name' 
-            className='bg-transparent border-b border-b-white outline-none text-white font-semibold' 
-            value={fName} 
-            onChange={(e) => setFName(e.target.value)} 
-          />
-          <input 
-            type="text" 
-            placeholder='Last Name' 
-            className='bg-transparent border-b border-b-white outline-none text-white font-semibold' 
-            value={lName} 
-            onChange={(e) => setLName(e.target.value)} 
-          />
-        </div>
-        <input 
-          type="text" 
-          placeholder='Phone Number' 
-          className='bg-transparent border-b border-b-white pb-2 outline-none text-white font-semibold' 
-          value={phone} 
-          onChange={(e) => setPhone(e.target.value)} 
-        />
-        <input 
-          type="email" 
-          placeholder='Email' 
-          className='bg-transparent border-b border-b-white outline-none text-white font-semibold' 
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)} 
-        />
-        <div className='flex gap-4'>
-          <input 
-            type="text" 
-            placeholder='Pin Code' 
-            className='bg-transparent border-b border-b-white outline-none text-white font-semibold' 
-            value={pinCode} 
-            onChange={(e) => setPincode(e.target.value)} 
-          />
-          <input 
-            type="text" 
-            placeholder='State' 
-            className='bg-transparent border-b border-b-white outline-none text-white font-semibold' 
-            value={state} 
-            onChange={(e) => setState(e.target.value)} 
-          />
-        </div>
-        <input 
-          type="password" 
-          placeholder='Password' 
-          className='bg-transparent border-b border-b-white outline-none text-white font-semibold' 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-        />
-        <p className='text-white text-sm font-semibold cursor-default text-center relative top-5'>
-          Already have an account? <Link to="/login" className='text-red-500 hover:underline cursor-pointer'>Login</Link>
-        </p>
-        <button className='text-white py-2 font-semibold border border-white rounded-lg relative top-12 bg-[#150303] hover:bg-red-950 transition-all duration-300'>
-          Submit
-        </button>
-      </SpotlightCard>
-    </form>
-                
+              <form className='rounded-3xl' onSubmit={handleSubmit}> 
+                <SpotlightCard 
+                  className="border border-white px-20 pt-12 rounded-lg -mt-28 flex flex-col gap-6" 
+                  spotlightColor="rgba(255, 0, 0, 0.2)"
+                >
+                  <div className='flex gap-4'>
+                    <input 
+                      type="text" 
+                      placeholder='First Name' 
+                      className='bg-transparent border-b border-b-white outline-none text-white font-semibold z-10' 
+                      value={fName} 
+                      onChange={(e) => setFName(e.target.value)} 
+                    />
+                    <input 
+                      type="text" 
+                      placeholder='Last Name' 
+                      className='bg-transparent border-b border-b-white outline-none text-white font-semibold z-10' 
+                      value={lName} 
+                      onChange={(e) => setLName(e.target.value)} 
+                    />
+                  </div>
+                  <input 
+                    type="text" 
+                    placeholder='Phone Number' 
+                    className='bg-transparent border-b border-b-white pb-2 outline-none text-white font-semibold' 
+                    value={phone} 
+                    onChange={(e) => setPhone(e.target.value)} 
+                  />
+                  <input 
+                    type="email" 
+                    placeholder='Email' 
+                    className='bg-transparent border-b border-b-white outline-none text-white font-semibold' 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)} 
+                  />
+                  <div className='flex gap-4'>
+                    <input 
+                      type="text" 
+                      placeholder='Pin Code' 
+                      className='bg-transparent border-b border-b-white outline-none text-white font-semibold' 
+                      value={pinCode} 
+                      onChange={(e) => setPincode(e.target.value)} 
+                    />
+                    <input 
+                      type="text" 
+                      placeholder='State' 
+                      className='bg-transparent border-b border-b-white outline-none text-white font-semibold' 
+                      value={state} 
+                      onChange={(e) => setState(e.target.value)} 
+                    />
+                  </div>
+                  {errorPassword && <p className='text-red-500 text-xs font-semibold'>{errorPassword}</p>}
+                  <input 
+                    type="password" 
+                    placeholder='Password' 
+                    className='bg-transparent border-b border-b-white outline-none text-white font-semibold' 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                  />
+                  <p className='text-white text-sm font-semibold cursor-default text-center relative top-5'>
+                    Already have an account? <Link to="/login" className='text-red-500 hover:underline cursor-pointer'>Login</Link>
+                  </p>
+                  <button 
+                    type="submit" 
+                    className="text-white py-2 font-semibold border border-white rounded-lg relative top-12 bg-[#150303] hover:bg-red-950 transition-all duration-300"
+                  >
+                    Submit
+                  </button>
+                </SpotlightCard>
+              </form>  
             </div>
             <Link to="/" className='text-white font-semibold border border-white py-2 rounded-full hover:text-[#070b19] hover:bg-white transition-all duration-300 w-28 flex justify-center'>Back</Link>
         </div>

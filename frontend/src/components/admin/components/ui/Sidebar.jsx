@@ -28,7 +28,7 @@ function Sidebar() {
           style={{ backgroundColor: "#f3f4f6" }}
         >
           <div className="space-y-1 bg flex flex-col">
-            <NavLink to="/admin" className={({isActive}) =>
+            <NavLink to="/admin/dashboard" className={({isActive}) =>
                 {if (isActive) setActiveDashboard(true);}}>
                 <Button
                 variant="secondary"
@@ -65,13 +65,40 @@ function Sidebar() {
                 Reports
                 </Button>
             </NavLink>
-            <NavLink to="/admin/payments" className={({isActive}) => {if (isActive) setActivePayments(true);}}>
+            <NavLink to="/admin/wallet-transactions" className={({isActive}) => {if (isActive) setActivePayments(true);}}>
                 <Button
                 variant="secondary"
                 className={activePayments ? activeClass : inactiveClass}
                 >
                 <Wallet className="h-4 w-4" />
-                Payments
+                Bonus/Fines
+                </Button>
+            </NavLink>
+            <NavLink to="/admin/deposits" className={({isActive}) => {if (isActive) setActivePayments(true);}}>
+                <Button
+                variant="secondary"
+                className={activePayments ? activeClass : inactiveClass}
+                >
+                <Wallet className="h-4 w-4" />
+                Deposits
+                </Button>
+            </NavLink>
+            <NavLink to="/admin/transactions" className={({isActive}) => {if (isActive) setActivePayments(true);}}>
+                <Button
+                variant="secondary"
+                className={activePayments ? activeClass : inactiveClass}
+                >
+                <Wallet className="h-4 w-4" />
+                Transactions
+                </Button>
+            </NavLink>
+            <NavLink to="/admin/banks" className={({isActive}) => {if (isActive) setActivePayments(true);}}>
+                <Button
+                variant="secondary"
+                className={activePayments ? activeClass : inactiveClass}
+                >
+                <Wallet className="h-4 w-4" />
+                Accounts
                 </Button>
             </NavLink>
             <NavLink to="/admin/feedbacks" className={({isActive}) => {if (isActive) setActiveFeedbacks(true);}}>

@@ -23,14 +23,6 @@ function Sidebar({className}) {
                 Change Password
             </NavLink>
             <NavLink 
-                to="/wallet" 
-                className={({ isActive }) => 
-                `border-b-2 border-r-2 ${isActive ? 'border-white' : 'border-transparent'}` 
-                }
-            >
-                My Wallet
-            </NavLink>
-            <NavLink 
                 to="/transactions" 
                 className={({ isActive }) => 
                 `border-b-2 border-r-2 ${isActive ? 'border-white' : 'border-transparent'}` 

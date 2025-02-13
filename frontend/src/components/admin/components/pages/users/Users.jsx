@@ -45,18 +45,7 @@ export default function User() {
     const [isAllSelected, setIsAllSelected] = useState(false);
     const [status, setStatus] = useState("");
     const navigate = useNavigate();
-
-    useEffect(() => {
-        //Fetching user data
-        axios
-            .get(`http://localhost:3000/api/all`)
-            .then((response) => {
-                setUserData(response.data);
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-            })
-    }, [selectedUser]);
+    const baseUrl = import.meta.env.VITE_BACKEND_URL
 
     function handleStatusChange(newStatus){
         setStatus(newStatus);
@@ -66,10 +55,9 @@ export default function User() {
     useEffect(() => {
         //Fetching only 10 users using pagination
         axios
-            .get(`http://localhost:3000/api/users`, {
-                params: {
-                    status: status,
-                    page: currentPage,
+            .get(`${baseUrl}/api/v1/user/admin/all`, {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
                 }
             })
             .then((response) => {
@@ -77,7 +65,7 @@ export default function User() {
                 setTotalPage(response.data.totalPages);
             })
             .catch((error) => {
-                console.error("Error fetching data:", error);
+                console.error("Error fetching data:", error.response.data);
             })
     }, [selectedUser, currentPage, status])
 
@@ -141,7 +129,7 @@ export default function User() {
         const userId = selectedUser[0];
         navigate(`/admin/user/edit/${userId}`);
     }
-
+    
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
         <Header />
@@ -343,33 +331,33 @@ export default function User() {
                                                 <span>User Id</span>
                                             </label>
                                         </TableHead>
-                                        <TableHead>Email</TableHead>
                                         <TableHead>Name</TableHead>
                                         <TableHead>Phone Number</TableHead>
                                         <TableHead>Status</TableHead>
+                                        <TableHead>Balance</TableHead>
+                                        <TableHead>Role</TableHead>
                                         <TableHead>Date Joined</TableHead>
                                     </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                     {userPerPage.users && userPerPage.users.length>0 ? (userPerPage.users.map((user) => (
-                                        <TableRow key={user.userId}>
+                                        <TableRow key={user.id}>
                                         <TableCell className="font-medium">
                                             <label className='flex items-center'>
                                                 <input 
                                                     type="checkbox" 
                                                     className='mx-2 h-4 w-4' 
-                                                    checked={selectedUser.includes(user.userId)}
-                                                    onChange={() => handleUserSelect(user.userId)}/>
-                                                {user.userId}
+                                                    checked={selectedUser.includes(user.id)}
+                                                    onChange={() => handleUserSelect(user.id)}/>
+                                                {user.id}
                                             </label>
                                         </TableCell>
-                                        <TableCell>{user.email}</TableCell>
                                         <TableCell>{user.name}</TableCell>
-                                        <TableCell>{user.phoneNumber}</TableCell>
+                                        <TableCell>{user.phone_number}</TableCell>
                                         <TableCell>
                                             <span
                                             className={`inline-flex items-center rounded-md px-4 py-1 text-white text-md ${
-                                                user.status === "Active"
+                                                user.status === "active"
                                                 ? "bg-green-600"
                                                 : user.status === "Inactive"
                                                 ? "bg-[#ffbf00]"
@@ -379,7 +367,9 @@ export default function User() {
                                             {user.status}
                                             </span>
                                         </TableCell>
-                                        <TableCell>{user.dateJoined}</TableCell>
+                                        <TableCell>{user.balance}</TableCell>
+                                        <TableCell>{user.role}</TableCell>
+                                        <TableCell>{user.registration_date?.split("T")[0]}</TableCell>
                                         </TableRow>
                                     ))
                                     ) : (

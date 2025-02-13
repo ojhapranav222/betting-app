@@ -24,52 +24,34 @@ export default function Games() {
   const [isAllSelected, setIsAllSelected] = useState(false);
   // For pagination: current page
   const [currentPage, setCurrentPage] = useState(1);
+  const [gamesPerPage, setGamesPerPage] = useState(null);
 
   const navigate = useNavigate();
+  const baseUrl = import.meta.env.VITE_BACKEND_URL
 
   // Fetch game data from localStorage if available, otherwise from the JSON file
   useEffect(() => {
-    axios.get('/sampleData/events.json')
+    axios.get(`${baseUrl}/api/v1/game/all`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    })
       .then((response) => {
-        const jsonData = response.data; // Static data from events.json
-        // Retrieve user-added games stored separately in localStorage
-        const storedUserGamesStr = localStorage.getItem('userAddedGames');
-        const userAddedGames = storedUserGamesStr ? JSON.parse(storedUserGamesStr) : [];
-    
-        // Optionally reverse user-added games if desired
-        const reversedUserGames = userAddedGames.slice().reverse();
-    
-        // Merge user-added games with the static data (order as needed)
-        const combinedData = [...reversedUserGames, ...jsonData];
-    
-        // Update state (and note: we're not storing the combined data back)
-        setGameData(combinedData);
+        setGameData(response.data.games);
       })
       .catch((error) => {
         console.error("Error fetching game data:", error);
       });
   }, []);  
   
-
-  // ----- Pagination -----
-  const perPage = 5; // Number of games per page (adjust as needed)
-  const totalPages = Math.ceil(gameData.length / perPage);
-  // Slice the game data for the current page
-  const paginatedGames = gameData.slice((currentPage - 1) * perPage, currentPage * perPage);
-
-  // ----- Stats (cards) -----
-  const totalGames = gameData.length;
-  const liveGames = gameData.filter(game => game.isLive).length;
-  const scheduledGames = totalGames - liveGames;
-
   // ----- Selection Handlers -----
   function handleSelectAll() {
-    if (selectedGame.length === paginatedGames.length) {
+    if (selectedGame.length === gameData.length) {
       setSelectedGame([]);
       setIsAllSelected(false);
     } else {
       // Compute absolute indices for games on the current page
-      const indices = paginatedGames.map((_, index) => (currentPage - 1) * perPage + index);
+      const indices = gameData.map((_, index) => (currentPage - 1) * perPage + index);
       setSelectedGame(indices);
       setIsAllSelected(true);
     }
@@ -155,7 +137,7 @@ export default function Games() {
                 <div className="h-full w-[1.3px] bg-gray-100 absolute right-0 top-0"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 relative">
                   <CardTitle className="text-2xl font-semibold">
-                    {totalGames}
+                    3
                   </CardTitle>
                   <CardIcon />
                 </CardHeader>
@@ -169,7 +151,7 @@ export default function Games() {
                 <div className="h-full w-[1.3px] bg-gray-100 absolute right-0 top-0"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 relative">
                   <CardTitle className="text-2xl font-semibold">
-                    {liveGames}
+                    1
                   </CardTitle>
                   <CardIcon />
                 </CardHeader>
@@ -183,7 +165,7 @@ export default function Games() {
                 <div className="h-full w-[1.3px] bg-gray-100 absolute right-0 top-0"></div>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 relative">
                   <CardTitle className="text-2xl font-semibold">
-                    {scheduledGames}
+                    2
                   </CardTitle>
                   <CardIcon />
                 </CardHeader>
@@ -203,7 +185,7 @@ export default function Games() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-sm font-semibold text-gray-500 pb-2">
-                    Other Stat
+                    Other Stats
                   </div>
                 </CardContent>
               </Card>
@@ -256,37 +238,36 @@ export default function Games() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {paginatedGames && paginatedGames.length > 0 ? (
-                        paginatedGames.map((game, index) => {
+                      {gameData && gameData.length > 0 ? (
+                        gameData.map((game, index) => {
                           // Compute the absolute index in gameData (for selection and keys)
-                          const absoluteIndex = (currentPage - 1) * perPage + index;
                           return (
-                            <TableRow key={absoluteIndex}>
+                            <TableRow key={game.id}>
                               <TableCell className="font-medium">
                                 <label className="flex items-center">
                                   <input
                                     type="checkbox"
                                     className="mx-2 h-4 w-4"
-                                    checked={selectedGame.includes(absoluteIndex)}
-                                    onChange={() => handleGameSelect(absoluteIndex)}
+                                    checked={game.id}
+                                    onChange={() => handleGameSelect(game.id)}
                                   />
-                                  {absoluteIndex + 1}
+                                  {game.id}
                                 </label>
                               </TableCell>
-                              <TableCell>{game.country1}</TableCell>
-                              <TableCell>{game.country2}</TableCell>
-                              <TableCell>{game.type}</TableCell>
-                              <TableCell>{game.point1}</TableCell>
-                              <TableCell>{game.point2}</TableCell>
+                              <TableCell>{game.team_a}</TableCell>
+                              <TableCell>{game.team_b}</TableCell>
+                              <TableCell>{game.match_name}</TableCell>
+                              <TableCell>{game.odds_team_a}</TableCell>
+                              <TableCell>{game.odds_team_b}</TableCell>
                               <TableCell>
                                 <span
-                                  className={`inline-flex items-center rounded-md px-4 py-1 text-white text-md ${game.isLive ? "bg-green-600" : "bg-blue-600"}`}
+                                  className={`inline-flex items-center rounded-md px-4 py-1 text-white text-md ${game.is_live ? "bg-green-600" : "bg-blue-600"}`}
                                 >
-                                  {game.isLive ? "Live" : "Scheduled"}
+                                  {game.is_live ? "Live" : "Scheduled"}
                                 </span>
                               </TableCell>
                               <TableCell>
-                                {(!game.isLive && game.startingIn) ? game.startingIn : "-"}
+                                {(!game.is_live && game.start_time) ? game.start_time : "-"}
                               </TableCell>
                             </TableRow>
                           );
@@ -308,7 +289,7 @@ export default function Games() {
                         onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                         className="cursor-pointer hover:text-gray-400"
                       />
-                      {[...Array(totalPages)].map((_, index) => (
+                      {[...Array(1)].map((_, index) => (
                         <Button
                           key={index + 1}
                           variant={index + 1 === currentPage ? "contained" : "outlined"}
@@ -327,7 +308,7 @@ export default function Games() {
                       />
                     </div>
                     <div>
-                      {paginatedGames.length} results on this page
+                      {gameData.length} results on this page
                     </div>
                   </div>
                 </CardContent>

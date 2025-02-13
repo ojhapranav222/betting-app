@@ -3,36 +3,48 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../../ui/button';
 import Sidebar from '../../ui/Sidebar';
 import Header from '../../ui/Header';
+import axios from 'axios';
 
 export default function AddGame() {
   const navigate = useNavigate();
 
   // Form state for the game details
-  const [country1, setCountry1] = useState('');
-  const [country2, setCountry2] = useState('');
-  const [point1, setPoint1] = useState('');
-  const [point2, setPoint2] = useState('');
-  const [type, setType] = useState('');
+  const [teamA, setCountry1] = useState('');
+  const [teamB, setCountry2] = useState('');
+  const [oddsTeamA, setPoint1] = useState('');
+  const [oddsTeamB, setPoint2] = useState('');
+  const [matchName, setType] = useState('');
   const [isLive, setIsLive] = useState(false);
   const [startingIn, setStartingIn] = useState('');
+  const [additionalNotes, setAdditionalNotes] = useState(null);
+  const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
   
-  const newGame = { country1, country2, point1, point2, type, isLive };
-  if (!isLive) {
-    newGame.startingIn = startingIn;
-  }
+      const newGame = {
+        matchName,
+        teamA,
+        teamB,
+        oddsTeamA,
+        oddsTeamB,
+        isLive,
+        ...(isLive ? null: {startTime: startingIn}),
+        ...(additionalNotes ? { additionalNotes } : null) // Only add additionalNotes if it's provided
+    };
+
+    console.log(newGame)
+    
+    await axios.post(`${baseUrl}/api/v1/game/add`, newGame, {
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(error => console.error('Error adding game:', error));
   
-  // Retrieve only the user-added games from localStorage
-  let storedGames = localStorage.getItem('userAddedGames');
-  let games = storedGames ? JSON.parse(storedGames) : [];
-  
-  // Append the new game to user-added games array
-  const updatedGames = [...games, newGame];
-  
-  // Update localStorage for user-added games
-  localStorage.setItem('userAddedGames', JSON.stringify(updatedGames));
   
   // Navigate back
   navigate('/admin/games');
@@ -51,10 +63,10 @@ export default function AddGame() {
       <form onSubmit={handleSubmit} className="max-w-md bg-white p-6 rounded shadow">
         {/* Country 1 */}
         <div className="mb-4">
-          <label className="block text-gray-700">Country 1</label>
+          <label className="block text-gray-700">Team A</label>
           <input
             type="text"
-            value={country1}
+            value={teamA}
             onChange={(e) => setCountry1(e.target.value)}
             className="w-full border border-gray-300 p-2 rounded"
             placeholder="Enter Country 1"
@@ -64,10 +76,10 @@ export default function AddGame() {
 
         {/* Country 2 */}
         <div className="mb-4">
-          <label className="block text-gray-700">Country 2</label>
+          <label className="block text-gray-700">Team B</label>
           <input
             type="text"
-            value={country2}
+            value={teamB}
             onChange={(e) => setCountry2(e.target.value)}
             className="w-full border border-gray-300 p-2 rounded"
             placeholder="Enter Country 2"
@@ -77,10 +89,10 @@ export default function AddGame() {
 
         {/* Point 1 */}
         <div className="mb-4">
-          <label className="block text-gray-700">Point 1</label>
+          <label className="block text-gray-700">Odds Team A</label>
           <input
             type="text"
-            value={point1}
+            value={oddsTeamA}
             onChange={(e) => setPoint1(e.target.value)}
             className="w-full border border-gray-300 p-2 rounded"
             placeholder="Enter Point 1"
@@ -90,10 +102,10 @@ export default function AddGame() {
 
         {/* Point 2 */}
         <div className="mb-4">
-          <label className="block text-gray-700">Point 2</label>
+          <label className="block text-gray-700">Odds Team B</label>
           <input
             type="text"
-            value={point2}
+            value={oddsTeamB}
             onChange={(e) => setPoint2(e.target.value)}
             className="w-full border border-gray-300 p-2 rounded"
             placeholder="Enter Point 2"
@@ -103,10 +115,10 @@ export default function AddGame() {
 
         {/* Game Type */}
         <div className="mb-4">
-          <label className="block text-gray-700">Game Type</label>
+          <label className="block text-gray-700">Match Name</label>
           <input
             type="text"
-            value={type}
+            value={matchName}
             onChange={(e) => setType(e.target.value)}
             className="w-full border border-gray-300 p-2 rounded"
             placeholder="Enter Game Type (e.g., ODI Series, T20 International)"
@@ -132,7 +144,7 @@ export default function AddGame() {
           <div className="mb-4">
             <label className="block text-gray-700">Starting In</label>
             <input
-              type="text"
+              type="datetime-local"
               value={startingIn}
               onChange={(e) => setStartingIn(e.target.value)}
               className="w-full border border-gray-300 p-2 rounded"
