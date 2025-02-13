@@ -19,51 +19,32 @@ import Sidebar from '../../ui/Sidebar';
 
 const EditUser = () => {
     const { id } = useParams();
-    const [userOrderData, setUserOrderData] = useState({})
-    const [tagInput, setTagInput] = useState('');
-    const [tags, setTags] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
-    const [userData, setUserData] = useState({
-        address: '',
-        email: '',
-        phoneNumber: ''
-    })
+    const [userData, setUserData] = useState(null)
     const navigate = useNavigate();
-    const [deposit, setDeposit] = useState(50);
     const [add, setAdd] = useState('');
     const [reduce, setReduce] = useState('');
+    const baseUrl = import.meta.env.VITE_BACKEND_URL
+    const [transaction, setTransaction] = useState(null);
+    const [error, setError] = useState(null)
     
-    useEffect(() => {
-        async function fetchData() {
-            if (id) {
-                try {
-                    const response = await axios.get(`http://localhost:3000/api/orders/${id}`);
-                    setUserOrderData(response.data);
-                    setUserData({
-                        address: response.data.user.address,
-                        email: response.data.user.email,
-                        phoneNumber: response.data.user.phoneNumber
-                    });
-                } catch (error) {
-                    console.error(error);
-                }
+    async function fetchData() {
+        if (id) {
+            try {
+                const response = await axios.get(`${baseUrl}/api/v1/user/admin/user-data/${id}`);
+                const deposits = await axios.get(`${baseUrl}/api/v1/deposit/user/${id}`);
+                setUserData(response.data);
+                setTransaction(deposits.data)
+            } catch (error) {
+                console.error(error);
             }
         }
+    }
+    
+    useEffect(() => {
         fetchData();
         }, [id])
-
-    // Fetch existing tags on initial load
-    useEffect(() => {
-        async function fetchTags(){
-        try {
-            const response = await axios.get(`http://localhost:3000/api/user/${id}/tags`);
-            setTags(response.data.tags);
-        } catch (error) {
-            console.error("Error fetching tags:", error);
-        }
-        };
-        fetchTags();
-    }, [id]);
+        console.log(transaction)
 
     async function deleteTag(tagToDelete){
         try {
@@ -102,18 +83,48 @@ const EditUser = () => {
         }
     }
 
-    function handleAdd() {
+    async function handleAdd() {
         if (add !== '') {
-          setDeposit(deposit + parseFloat(add));
-          setAdd(''); 
+          await axios.post(`${baseUrl}/api/v1/wallet/add`, {
+            userId: id,
+            amount: parseFloat(add)
+        }, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+          })
+          .then((response) => {
+            console.log(response.data);
+            setAdd('');
+          })
+          .catch((error) => {
+            console.error(error);
+          })
         }
+
+        fetchData();
       };
       
-      function handleReduce() {
-        if (reduce !== '' && deposit >= parseFloat(reduce)) { 
-          setDeposit(deposit - parseFloat(reduce));
-          setReduce(''); 
+      async function handleReduce() {
+        if (reduce !== ''){ 
+            await axios.post(`${baseUrl}/api/v1/wallet/deduct`, {
+                userId: id,
+                amount: parseFloat(reduce)
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+              })
+              .then((response) => {
+                console.log(response.data);
+                setReduce(''); 
+              })
+              .catch((error) => {
+                console.error(error.response.data.message);
+                setError(error.response.data.message)
+              })
         }
+        fetchData();
       };
     
       function handleKeyPress(event){
@@ -171,35 +182,24 @@ const EditUser = () => {
                                         <TableBody>
                                             <TableRow>
                                                 <TableCell className="flex p-8 items-center">
-                                                    { userOrderData.success ? (
+                                                    { userData ? (
                                                         <div className="flex items-center">
                                                         <div className="bg-[#e03820] p-4 rounded-full text-2xl h-16 w-16 flex items-center justify-center text-white font-bold mr-4">
-                                                        {userOrderData.user.name[0]}
+                                                        {userData.user.name[0]}
                                                         </div>
                                                 
                                                         <div>
-                                                        <div className="font-bold mb-1">{userOrderData.user.name}</div>
+                                                        <div className="font-bold mb-1">{userData.user.name}</div>
                                                         <div>
-                                                            <div>Country: {userOrderData.user.country}</div>
-                                                            <div>Bookings: {userOrderData.numOfOrders}</div>
-                                                            <div>User since: {userOrderData.user.dateJoined}</div>
+                                                            <div>Pincode: {userData.user.pincode}</div>
+                                                            <div>State: {userData.user.state}</div>
+                                                            <div>User since: {userData.user.registration_date.split("T")[0]}</div>
                                                         </div>
                                                         </div>
                                                     </div>
                                                     ) : (<div>
-                                                        Cannot fetch data: {JSON.stringify(userOrderData)}
+                                                        Cannot fetch data: {JSON.stringify(userData)}
                                                     </div>) }
-                                                </TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell className="p-8">
-                                                    <div className='font-bold mb-4 flex flex-col'>
-                                                        Customer Notes
-                                                    </div>
-                                                    <label className='text-gray-400 flex flex-col'>
-                                                        Notes
-                                                        <input type='text' placeholder='Add notes about user' className='w-auto h-[60px] px-4 border rounded-sm border-gray-300' name='notes' />
-                                                    </label>
                                                 </TableCell>
                                             </TableRow>
                                         </TableBody>
@@ -208,24 +208,24 @@ const EditUser = () => {
                             </Card>
                             <Card>
                             <CardContent>
-                                <CardHeader className='font-bold'>Transaction History</CardHeader>
+                                <CardHeader className='font-bold'>Deposit History</CardHeader>
                                     <Table>
                                         <TableHeader className='border-b-2'>
                                         <TableRow>
-                                            <TableHead>Order ID</TableHead>
+                                            <TableHead>ID</TableHead>
                                             <TableHead>Date</TableHead>
-                                            <TableHead>Order Status</TableHead>
-                                            <TableHead>Price</TableHead>
+                                            <TableHead>Status</TableHead>
+                                            <TableHead>Amount</TableHead>
                                         </TableRow>
                                         </TableHeader>
                                         <TableBody>
-                                        {userOrderData.success ? (userOrderData.orders.map((order) => (
-                                            <TableRow key={order.orderId}>
-                                            <TableCell>{order.orderId}</TableCell>
+                                        {transaction?.deposits ? (transaction.deposits.map((order) => (
+                                            <TableRow key={order.id}>
+                                            <TableCell>{order.id}</TableCell>
                                             <TableCell>
                                                 <span
                                                 className={`inline-flex items-center rounded-md px-4 py-1 text-white text-md ${
-                                                    order.status === "Completed"
+                                                    order.status === "approved"
                                                     ? "bg-green-600"
                                                     : "bg-gray-400"
                                                 }`}
@@ -233,9 +233,9 @@ const EditUser = () => {
                                                 {order.status}
                                                 </span>
                                             </TableCell>
-                                            <TableCell>${order.price}</TableCell>
+                                            <TableCell>${order.amount}</TableCell>
                                             
-                                            <TableCell>{order.date}</TableCell>
+                                            <TableCell>{order.created_at.split("T")[0]}</TableCell>
                                             </TableRow>
                                         ))
                                         ) : (
@@ -252,7 +252,7 @@ const EditUser = () => {
                         </div>
                         <div className='flex flex-col gap-4 basis-1/3'>
                             <Card>
-                                <CardContent>
+                                {/* <CardContent>
                                     <Table>
                                         <TableBody>
                                             <TableRow>
@@ -324,13 +324,13 @@ const EditUser = () => {
                                             </TableRow>
                                         </TableBody>
                                     </Table>
-                                </CardContent>
+                                </CardContent> */}
                             </Card>
                             <Card>
                                 <CardHeader className='font-bold'>Balance</CardHeader>
                                 
                                 <CardContent>
-                                    <div className='font-semibold text-xl mb-4'>${deposit}</div>
+                                    <div className='font-semibold text-xl mb-4'>₹{userData?.user.balance}</div>
                                     <label className='text-gray-400 flex flex-col'>
                                         Add Balance
                                         <input type='text' id='addInput' placeholder='Add balance' className='w-auto h-[60px] px-4 border rounded-sm border-gray-300' name='tags' value={add} onChange={(e) => setAdd(e.target.value)} onKeyPress ={handleKeyPress}/>
@@ -338,6 +338,7 @@ const EditUser = () => {
                                     <label className='text-gray-400 flex flex-col mt-4'>
                                         Deduct Balance
                                         <input type='text' id='reduceInput' placeholder='Deduct balance' className='w-auto h-[60px] px-4 border rounded-sm border-gray-300' name='tags' value={reduce} onChange={(e) => setReduce(e.target.value)} onKeyPress ={handleKeyPress} />
+                                        {error && <div className='text-red-600 text-sm'>{error}</div>}
                                     </label>
                                 </CardContent>
                             </Card>

@@ -30,7 +30,66 @@ import axios from 'axios';
 import Header from '../../ui/Header';
 import Sidebar from '../../ui/Sidebar';
 
-function Appointment() {
+function StatusCell({ deposit, activeDropdown, setActiveDropdown }) {
+    const [status, setStatus] = useState(deposit.status);
+    const baseUrl = import.meta.env.VITE_BACKEND_URL;
+  
+    async function handleStatusChange (newStatus) {
+      try {
+        await axios.patch(`${baseUrl}/api/v1/withdrawal/${newStatus}/${deposit.id}`); // API call
+        setStatus(newStatus); // Update UI
+        setActiveDropdown(null); // Close dropdown
+      } catch (error) {
+        console.error(`Failed to update status: ${error}`);
+        alert("Error updating status. Try again.");
+      }
+    };
+  
+    return (
+      <TableCell>
+        <div className="relative">
+          <span
+            className={`inline-flex items-center rounded-md px-4 py-1 text-white text-md cursor-pointer ${
+              status === "pending"
+                ? "bg-[#ffbf00]"
+                : status === "approved"
+                ? "bg-green-600"
+                : status === "rejected"
+                ? "bg-red-600"
+                : "bg-black"
+            }`}
+            onClick={() =>
+              status === "pending"
+                ? setActiveDropdown(activeDropdown === deposit.id ? null : deposit.id)
+                : null
+            }
+          >
+            {status}
+          </span>
+  
+          {/* Dropdown Menu (only shows for the clicked row) */}
+          {activeDropdown === deposit.id && status === "pending" && (
+            <div className="absolute top-full left-0 mt-2 w-32 bg-gray-800 shadow-lg rounded-md">
+              <button
+                className="block w-full text-left px-4 py-2 text-white hover:bg-green-600"
+                onClick={() => handleStatusChange("approve")}
+              >
+                ✅ Approve
+              </button>
+              <button
+                className="block w-full text-left px-4 py-2 text-white hover:bg-red-600"
+                onClick={() => handleStatusChange("reject")}
+              >
+                ❌ Reject
+              </button>
+            </div>
+          )}
+        </div>
+      </TableCell>
+    );
+}
+
+function Withdrawal() {
 
     const [depositsPerPage, setDepositsPerPage] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
@@ -38,13 +97,13 @@ function Appointment() {
     const [status, setStatus] = useState("");
     const [selectedDeposits, setSelectedDeposits] = useState([]);
     const [isAllSelected, setIsAllSelected] = useState(false);
-    const navigate = useNavigate();
-    const [isOpen, setIsOpen] = useState(false);
+    const [wStatus, setWStatus] = useState(depositsPerPage.withdrawals?.id);
+    const [activeDropdown, setActiveDropdown] = useState(null);
     const baseUrl = import.meta.env.VITE_BACKEND_URL
 
     useEffect(() => {
         axios
-            .get(`${baseUrl}/api/v1/deposit/all`, {
+            .get(`${baseUrl}/api/v1/withdrawal/all`, {
                 headers:{
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -56,6 +115,8 @@ function Appointment() {
                 console.error(err);
             })
     }, [selectedDeposits, status, currentPage]);
+
+    console.log(depositsPerPage)
 
     function handleSelectAll(){
         try{
@@ -92,6 +153,17 @@ function Appointment() {
         setCurrentPage(1);
     }
 
+    async function handleStatusChange (newStatus){
+        try {
+          await axios.post(`${baseUrl}/api/v1/withdrawal/${newStatus}/${depositsPerPage.withdrawals.id}`); // API call
+          setWStatus(newStatus); // Update status in UI
+          setShowDropdown(false); // Hide dropdown after selection
+        } catch (error) {
+          console.error(`Failed to update status: ${error.response.data.message}`);
+          alert("Error updating status. Try again.");
+        }
+      };
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
         {/* Header Section */}
@@ -104,7 +176,7 @@ function Appointment() {
             <main className="p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-semibold">Deposit History</h1>
+                    <h1 className="text-2xl font-semibold">Withdrawal History</h1>
                     <div className='flex gap-6'>
                         <Button
                             variant="secondary"
@@ -159,12 +231,11 @@ function Appointment() {
                                     <TableHead>User Id</TableHead>
                                     <TableHead>Amount</TableHead>
                                     <TableHead>Status</TableHead>
-                                    <TableHead>Payment Date</TableHead>
-                                    <TableHead>Screenshot</TableHead>
+                                    <TableHead>Request Date</TableHead>
                                 </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                {depositsPerPage.deposits && depositsPerPage.deposits.length>0 ? (depositsPerPage.deposits.map((deposit) => (
+                                {depositsPerPage.withdrawals && depositsPerPage.withdrawals.length>0 ? (depositsPerPage.withdrawals.map((deposit) => (
                                     <TableRow key={deposit.id}>
                                     <TableCell className="font-medium">
                                         <label className='flex items-center'>
@@ -180,42 +251,13 @@ function Appointment() {
                                     <TableCell>{deposit.user_id}</TableCell>
                                     <TableCell>{deposit.amount}</TableCell>
                                     <TableCell>
-                                        <span className={`inline-flex items-center rounded-md px-4 py-1 text-white text-md ${
-                                            deposit.status === 'pending'
-                                            ? 'bg-[#ffbf00]'
-                                            : deposit.status === 'approved'
-                                            ? 'bg-green-600'
-                                            : deposit.status === 'Cancelled'
-                                            ? 'bg-red-600'
-                                            : 'bg-black'
-                                        }`}>
-                                            {deposit.status}
-                                        </span>
+                                        <StatusCell
+                                            deposit={deposit}
+                                            activeDropdown={activeDropdown}
+                                            setActiveDropdown={setActiveDropdown}
+                                        />
                                     </TableCell>
                                     <TableCell>{deposit.created_at.split("T")[0]}</TableCell>
-                                    <TableCell>
-                                    <img 
-                                        src={deposit.screenshot} 
-                                        alt="Deposit Screenshot"
-                                        className='h-20 cursor-pointer'
-                                        onClick={() => setIsOpen(true)}
-                                        />
-
-                                    
-
-                                    </TableCell>
-                                    {isOpen && (
-                                            <div 
-                                            className="fixed inset-0 flex justify-center items-center"
-                                            onClick={() => setIsOpen(false)} // Close on click
-                                            >
-                                            <img 
-                                                src={deposit.screenshot} 
-                                                alt="Deposit Screenshot" 
-                                                className="max-h-3xl"
-                                            />
-                                            </div>
-                                        )}
                                     </TableRow>
 
                                 ))
@@ -270,4 +312,4 @@ function Appointment() {
   )
 }
 
-export default Appointment
+export default Withdrawal

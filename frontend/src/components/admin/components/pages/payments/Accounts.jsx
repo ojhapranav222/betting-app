@@ -30,7 +30,7 @@ import axios from 'axios';
 import Header from '../../ui/Header';
 import Sidebar from '../../ui/Sidebar';
 
-function Appointment() {
+function Accounts() {
 
     const [depositsPerPage, setDepositsPerPage] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
@@ -42,20 +42,24 @@ function Appointment() {
     const [isOpen, setIsOpen] = useState(false);
     const baseUrl = import.meta.env.VITE_BACKEND_URL
 
-    useEffect(() => {
-        axios
-            .get(`${baseUrl}/api/v1/deposit/all`, {
+    async function fetchData(){
+        try{
+            const response = await axios.get(`${baseUrl}/api/v1/bank/all`,{
                 headers:{
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             })
-            .then((response) => {
-                setDepositsPerPage(response.data);
-            })
-            .catch((err) => {
-                console.error(err);
-            })
+            setDepositsPerPage(response.data);
+        } catch(err) {
+            console.error(err)
+        }
+    }
+
+    useEffect(() => {
+        fetchData()
     }, [selectedDeposits, status, currentPage]);
+
+    console.log(depositsPerPage)
 
     function handleSelectAll(){
         try{
@@ -91,6 +95,20 @@ function Appointment() {
         setStatus(newStatus);
         setCurrentPage(1);
     }
+    async function togglePrimaryStatus(bankId) {
+        try {
+            const response = await axios.post(`${baseUrl}/api/v1/bank/primary`, { bankId }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+    
+            fetchData();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -106,6 +124,15 @@ function Appointment() {
                 <div className="flex items-center justify-between">
                     <h1 className="text-2xl font-semibold">Deposit History</h1>
                     <div className='flex gap-6'>
+                    <Link to="/admin/banks/add">
+                        <Button
+                            variant="secondary"
+                            className="w-auto bg-[#e0382a] text-white hover:text-[#e0382a] hover:border-2 hover:bg-white"
+                        >
+                            <FiPlus />
+                            Add Account
+                        </Button>
+                    </Link>
                         <Button
                             variant="secondary"
                             className="w-auto bg-[white] text-[#e0382a] border-2"
@@ -155,16 +182,16 @@ function Appointment() {
                                             <span>Id</span>
                                         </label>
                                     </TableHead>
-                                    <TableHead>User Name</TableHead>
-                                    <TableHead>User Id</TableHead>
-                                    <TableHead>Amount</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead>Payment Date</TableHead>
-                                    <TableHead>Screenshot</TableHead>
+                                    <TableHead>Bank Name</TableHead>
+                                    <TableHead>Account Number</TableHead>
+                                    <TableHead>Holder Name</TableHead>
+                                    <TableHead>Photo</TableHead>
+                                    <TableHead>UPI Id</TableHead>
+                                    <TableHead>Is Primary?</TableHead>
                                 </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                {depositsPerPage.deposits && depositsPerPage.deposits.length>0 ? (depositsPerPage.deposits.map((deposit) => (
+                                {depositsPerPage.banks && depositsPerPage.banks.length>0 ? (depositsPerPage.banks.map((deposit) => (
                                     <TableRow key={deposit.id}>
                                     <TableCell className="font-medium">
                                         <label className='flex items-center'>
@@ -176,43 +203,33 @@ function Appointment() {
                                             {deposit.id}
                                         </label>
                                     </TableCell>
-                                    <TableCell>{deposit.user_name}</TableCell>
-                                    <TableCell>{deposit.user_id}</TableCell>
-                                    <TableCell>{deposit.amount}</TableCell>
+                                    <TableCell>{deposit.bank_name}</TableCell>
+                                    <TableHead>{deposit.account_number}</TableHead>
+                                    <TableCell>{deposit.account_holder_name}</TableCell>
                                     <TableCell>
-                                        <span className={`inline-flex items-center rounded-md px-4 py-1 text-white text-md ${
-                                            deposit.status === 'pending'
-                                            ? 'bg-[#ffbf00]'
-                                            : deposit.status === 'approved'
-                                            ? 'bg-green-600'
-                                            : deposit.status === 'Cancelled'
-                                            ? 'bg-red-600'
-                                            : 'bg-black'
-                                        }`}>
-                                            {deposit.status}
+                                        <img src={deposit.image} alt="UPI QR Photo" className='h-20 cursor-pointer' onClick={() => setIsOpen(true)}/>
+                                    </TableCell>
+                                    <TableCell>{deposit.upi_id}</TableCell>
+                                    <TableCell>
+                                        <span 
+                                            className={`inline-flex items-center rounded-md px-4 py-1 text-white text-md cursor-pointer ${
+                                                deposit.is_primary ? 'bg-green-600' : 'bg-red-600'
+                                            }`}
+                                            onClick={() => togglePrimaryStatus(deposit.id)}
+                                        >
+                                            {deposit.is_primary ? 'Yes' : 'No'}
                                         </span>
                                     </TableCell>
-                                    <TableCell>{deposit.created_at.split("T")[0]}</TableCell>
-                                    <TableCell>
-                                    <img 
-                                        src={deposit.screenshot} 
-                                        alt="Deposit Screenshot"
-                                        className='h-20 cursor-pointer'
-                                        onClick={() => setIsOpen(true)}
-                                        />
 
-                                    
-
-                                    </TableCell>
                                     {isOpen && (
                                             <div 
                                             className="fixed inset-0 flex justify-center items-center"
                                             onClick={() => setIsOpen(false)} // Close on click
                                             >
                                             <img 
-                                                src={deposit.screenshot} 
+                                                src={deposit.image} 
                                                 alt="Deposit Screenshot" 
-                                                className="max-h-3xl"
+                                                className="max-h-[32rem] border border-black"
                                             />
                                             </div>
                                         )}
@@ -270,4 +287,4 @@ function Appointment() {
   )
 }
 
-export default Appointment
+export default Accounts

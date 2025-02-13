@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-const SpotlightCard = ({ children, className = "", spotlightColor = "rgba(255, 255, 255, 0.25)" }) => {
+const SpotlightCard = ({ children, className = "", spotlightColor = "rgba(255, 255, 255, 0.25)", onClick }) => {
 const divRef = useRef(null);
 const [isFocused, setIsFocused] = useState(false);
 const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -40,6 +40,7 @@ return (
     onMouseEnter={handleMouseEnter}
     onMouseLeave={handleMouseLeave}
     className={`relative rounded-3xl p-8 ${className}`}
+    onClick={onClick}
   >
     <div
       className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-in-out"

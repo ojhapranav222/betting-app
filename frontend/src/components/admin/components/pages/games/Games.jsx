@@ -16,6 +16,71 @@ const CardIcon = () => (
   </div>
 );
 
+function WinnerCell({ game, activeDropdown, setActiveDropdown }) {
+  const [winner, setWinner] = useState(game.winner);
+  const baseUrl = import.meta.env.VITE_BACKEND_URL
+
+  const handleWinnerSelection = async (selectedWinner) => {
+    try {
+      await axios.post(`${baseUrl}/api/v1/game/winner`, {
+        gameId: game.id,
+        winner: selectedWinner,
+      }, {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+          }
+      });
+
+      setWinner(selectedWinner); // Update UI
+      setActiveDropdown(null); // Close dropdown
+    } catch (error) {
+      console.error("Error updating winner:", error);
+      alert("Failed to update winner. Please try again.");
+    }
+  };
+
+  return (
+    <TableCell>
+      <div className="relative">
+        {winner ? (
+          // Display Winner Team Name
+          <span className="bg-black p-2 rounded-md text-white">
+            {winner === "team_a" ? game.team_a : game.team_b}
+          </span>
+        ) : (
+          // Dropdown for Selecting Winner
+          <span
+            className="bg-yellow-500 cursor-pointer p-1 text-center rounded-md"
+            onClick={() =>
+              setActiveDropdown(activeDropdown === game.id ? null : game.id)
+            }
+          >
+            Not <br /> Finished
+          </span>
+        )}
+
+        {/* Dropdown (only shows when match is undecided & clicked) */}
+        {activeDropdown === game.id && !winner && (
+          <div className="absolute top-full left-0 mt-2 w-32 bg-gray-800 shadow-lg rounded-md">
+            <button
+              className="block w-full text-left px-4 py-2 text-white hover:bg-green-600"
+              onClick={() => handleWinnerSelection("team_a")}
+            >
+              🏆 {game.team_a}
+            </button>
+            <button
+              className="block w-full text-left px-4 py-2 text-white hover:bg-blue-600"
+              onClick={() => handleWinnerSelection("team_b")}
+            >
+              🏆 {game.team_b}
+            </button>
+          </div>
+        )}
+      </div>
+    </TableCell>
+  );
+}
+
 export default function Games() {
   // State to hold all game data from events.json or localStorage
   const [gameData, setGameData] = useState([]);
@@ -25,24 +90,22 @@ export default function Games() {
   // For pagination: current page
   const [currentPage, setCurrentPage] = useState(1);
   const [gamesPerPage, setGamesPerPage] = useState(null);
-
+  const [activeDropdown, setActiveDropdown] = useState(null);
   const navigate = useNavigate();
   const baseUrl = import.meta.env.VITE_BACKEND_URL
 
   // Fetch game data from localStorage if available, otherwise from the JSON file
+  async function fetchGameData() {
+    try{
+      const response = await axios.get(`${baseUrl}/api/v1/game/all`, {headers: {'Authorization' : `Bearer ${localStorage.getItem('token')}`}}); 
+      setGameData(response.data.games);
+    } catch(err){
+      console.error(err)
+    }
+  }
   useEffect(() => {
-    axios.get(`${baseUrl}/api/v1/game/all`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-    })
-      .then((response) => {
-        setGameData(response.data.games);
-      })
-      .catch((error) => {
-        console.error("Error fetching game data:", error);
-      });
-  }, []);  
+    fetchGameData()
+  }, [gameData.id]);  
   
   // ----- Selection Handlers -----
   function handleSelectAll() {
@@ -100,6 +163,16 @@ export default function Games() {
     setSelectedGame([]); // Clear selections when changing pages
     setIsAllSelected(false);
   }
+
+  async function toggleBet(gameId) {
+    try {
+        await axios.put(`${baseUrl}/api/v1/game/${gameId}/toggle-bet`);
+        fetchGameData();  // Refresh the games list after update
+    } catch (error) {
+        console.error(error);
+    }
+  }
+
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -208,7 +281,6 @@ export default function Games() {
                     </div>
                     <div className="right flex text-[#e0382a]">
                       <FaSortAlphaDown className="border-2 mx-1 h-9 w-9 p-2 rounded-md" />
-                      <RiEditLine className="border-2 mx-1 h-9 w-9 p-2 rounded-md cursor-pointer" onClick={editSelectedGame} />
                       <FiTrash className="border-2 mx-1 h-9 w-9 p-2 rounded-md cursor-pointer" onClick={deleteSelectedGames} />
                     </div>
                   </div>
@@ -231,10 +303,10 @@ export default function Games() {
                         <TableHead>Country 1</TableHead>
                         <TableHead>Country 2</TableHead>
                         <TableHead>Type</TableHead>
-                        <TableHead>Point 1</TableHead>
-                        <TableHead>Point 2</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead>Starting In</TableHead>
+                        <TableHead>Betting</TableHead>
+                        <TableHead>Winner</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -257,8 +329,6 @@ export default function Games() {
                               <TableCell>{game.team_a}</TableCell>
                               <TableCell>{game.team_b}</TableCell>
                               <TableCell>{game.match_name}</TableCell>
-                              <TableCell>{game.odds_team_a}</TableCell>
-                              <TableCell>{game.odds_team_b}</TableCell>
                               <TableCell>
                                 <span
                                   className={`inline-flex items-center rounded-md px-4 py-1 text-white text-md ${game.is_live ? "bg-green-600" : "bg-blue-600"}`}
@@ -269,6 +339,19 @@ export default function Games() {
                               <TableCell>
                                 {(!game.is_live && game.start_time) ? game.start_time : "-"}
                               </TableCell>
+                              <TableCell>
+                              <button 
+                                  onClick={() => toggleBet(game.id)}
+                                  className={`px-4 py-2 rounded text-sm text-white ${game.bet ? "bg-green-500" : "bg-red-500"}`}
+                              >
+                                  {game.bet ? "Enabled" : "Disabled"}
+                              </button>
+                              </TableCell>
+                              <WinnerCell
+                                game={game}
+                                activeDropdown={activeDropdown}
+                                setActiveDropdown={setActiveDropdown}
+                              />
                             </TableRow>
                           );
                         })

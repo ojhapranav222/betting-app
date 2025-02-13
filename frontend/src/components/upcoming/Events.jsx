@@ -1,49 +1,75 @@
 import React, { useState, useEffect } from 'react';
 import Card from '../ui/Card';
 import axios from 'axios';
+import QuickBetModal from '../ui/QuickBetModal';
 
 function Events() {
-  const [events, setEvents] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [events, setEvents] = useState(null);
+
+  function openModal(event){
+      setSelectedEvent(event);
+      setIsModalOpen(true);
+  };
+  const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
-    axios.get('/sampleData/events.json')
+    axios.get(`${baseUrl}/api/v1/game/all`)
       .then((response) => {
-        const jsonData = response.data; // Static data from events.json
-        // Retrieve user-added games stored separately in localStorage
-        const storedUserGamesStr = localStorage.getItem('userAddedGames');
-        const userAddedGames = storedUserGamesStr ? JSON.parse(storedUserGamesStr) : [];
-    
-        // Optionally reverse user-added games if desired
-        const reversedUserGames = userAddedGames.slice().reverse();
-    
-        // Merge user-added games with the static data (order as needed)
-        const combinedData = [...reversedUserGames, ...jsonData];
-    
-        // Update state (and note: we're not storing the combined data back)
-        setEvents(combinedData);
+        setEvents(response.data);
       })
       .catch((error) => {
         console.error("Error fetching game data:", error);
       });
-  }, []);  
+  }, []);
 
   return (
     <div className='mt-24 w-[50%] h-screen overflow-y-scroll overflow-x-hidden'>
-        <h1 className='text-white text-center mb-8 font-bold text-3xl'>Upcoming Events</h1>
+        <h1 className='text-white text-center mb-8 font-bold text-3xl'>Upcoming & Live Matches</h1>
         <div className='flex flex-col gap-4 pb-36'>
-            {events ? ( events.map((event, index) => (
+    {events ? (
+        events.games?.map((event, index) => (
+            event.bet ? (
+              <>
                 <Card
-                key={index}
-                country1={event.country1}
-                country2={event.country2}
-                point1={event.point1}
-                point2={event.point2}
-                isLive={event.isLive}
-                startingIn={event.startingIn}
-                type={event.type}
+                    country1={event.team_a}
+                    country2={event.team_b}
+                    point1={event.odds_team_a}
+                    point2={event.odds_team_b}
+                    isLive={event.is_live}
+                    startingIn={event.start_time.split("T")[1].split("Z")[0]}
+                    type={event.match_name}
+                    onCardClick={() => openModal(event)}
                 />
-            ))) : (<p className='text-white text-center'>No upcoming or live games at this moment</p>)}
-        </div>
+              </>
+            ) : (
+                <div key={index} className="cursor-not-allowed opacity-50">
+                    <Card
+                        country1={event.team_a}
+                        country2={event.team_b}
+                        point1={event.odds_team_a}
+                        point2={event.odds_team_b}
+                        isLive={event.is_live}
+                        startingIn={event.start_time.split("T")[1].split("Z")[0]}
+                        type={event.match_name}
+                    />
+                </div>
+            )
+        ))
+    ) : (
+        <p className='text-white text-center'>No upcoming or live games at this moment</p>
+    )}
+</div>
+{isModalOpen && selectedEvent && (
+      <QuickBetModal 
+        event={selectedEvent} 
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedEvent(null); // Clear event data
+        }} 
+      />
+    )}
     </div>
   )
 }

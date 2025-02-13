@@ -21,6 +21,13 @@ import HelpDesk from './components/admin/components/pages/helpdesk/Helpdesk'
 import Games from './components/admin/components/pages/games/Games'
 import AddGame from './components/admin/components/pages/games/AddGame'
 import Withdraw from './components/payments/Withdraw'
+import WalletTransactions from './components/admin/components/pages/payments/WalletTransactions'
+import Withdrawal from './components/admin/components/pages/payments/Withdrawal'
+import Accounts from './components/admin/components/pages/payments/Accounts'
+import AddAccount from './components/admin/components/pages/payments/AddAccount'
+import PrivateRoute from './components/auth/PrivateRoute'
+import AdminRoute from './components/auth/AdminRoute'
+import History from './components/payments/History'
 
 axios.defaults.withCredentials = true;
 
@@ -32,23 +39,33 @@ function App() {
         <Route path='/' element={<Landing />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/upcoming' element={<UpcomingGames />} />
-        <Route path='/deposit' element={<Deposit />} />
-        <Route path='/withdraw' element={<Withdraw />} />
-        <Route path='/profile' element={<Main />} />
-        <Route path='/change-password' element={<Password />} />
-        <Route path='/transactions' element={<Transactions />} />
-        <Route path='/admin/dashboard' element={<Dashboard />} />
-        <Route path='/admin/users' element={<User />} />
-        <Route path='/admin/user/edit/:id' element={<EditUser />} />
-        <Route path='/admin/user/add' element={<AddUsers />} />
-        <Route path='/admin/reports' element={<Report />} />
-        <Route path='/admin/payments' element={<Payments />} />
-        <Route path='/admin/feedbacks' element={<Feedback />} />
-        <Route path='/admin/bank/add' element={<AddBank />} />
-        <Route path='/admin/helpdesk' element={<HelpDesk />} />
-        <Route path='/admin/games' element={<Games />} />
-        <Route path='/admin/games/add' element={<AddGame />} />
+        <Route path='/games' element={<UpcomingGames />} />
+
+        <Route element={<PrivateRoute />}>
+          <Route path='/deposit' element={<Deposit />} />
+          <Route path='/withdraw' element={<Withdraw />} />
+          <Route path='/profile' element={<Main />} />
+          <Route path='/change-password' element={<Password />} />
+          <Route path='/transactions' element={<Transactions />} />
+          <Route path='/history' element={<History />} />
+        </Route>
+        <Route element={<AdminRoute />}>
+          <Route path='/admin/dashboard' element={<Dashboard />} />
+          <Route path='/admin/users' element={<User />} />
+          <Route path='/admin/user/edit/:id' element={<EditUser />} />
+          <Route path='/admin/user/add' element={<AddUsers />} />
+          <Route path='/admin/reports' element={<Report />} />
+          <Route path='/admin/deposits' element={<Payments />} />
+          <Route path='/admin/feedbacks' element={<Feedback />} />
+          <Route path='/admin/bank/add' element={<AddBank />} />
+          <Route path='/admin/helpdesk' element={<HelpDesk />} />
+          <Route path='/admin/games' element={<Games />} />
+          <Route path='/admin/games/add' element={<AddGame />} />
+          <Route path='/admin/wallet-transactions' element={<WalletTransactions />} />
+          <Route path='/admin/withdrawals' element={<Withdrawal />} />
+          <Route path='/admin/banks' element={<Accounts />} />
+          <Route path='/admin/banks/add' element={<AddAccount />} />
+        </Route>
       </Routes>
     </Router>
   )

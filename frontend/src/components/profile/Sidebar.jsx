@@ -23,12 +23,28 @@ function Sidebar({className}) {
                 Change Password
             </NavLink>
             <NavLink 
-                to="/transactions" 
+                to="/history" 
                 className={({ isActive }) => 
                 `border-b-2 border-r-2 ${isActive ? 'border-white' : 'border-transparent'}` 
                 }
             >
-                Transaction History
+                Deposit History
+            </NavLink>
+            <NavLink 
+                to="/history" 
+                className={({ isActive }) => 
+                `border-b-2 border-r-2 ${isActive ? 'border-white' : 'border-transparent'}` 
+                }
+            >
+                Withdrawal History
+            </NavLink>
+            <NavLink 
+                to="/history" 
+                className={({ isActive }) => 
+                `border-b-2 border-r-2 ${isActive ? 'border-white' : 'border-transparent'}` 
+                }
+            >
+                Wallet Transaction History
             </NavLink>
         </ul>
     </div>

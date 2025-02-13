@@ -10,6 +10,7 @@ import {
     Users2,
     Wallet,
   } from "lucide-react";
+import { BsBank2 } from "react-icons/bs";
 import { MdOutlineSportsCricket } from "react-icons/md";
 
 function Sidebar() {
@@ -22,6 +23,9 @@ function Sidebar() {
     const [activePayments, setActivePayments] = useState(false)
     const [activeFeedbacks, setActiveFeedbacks] = useState(false)
     const [activeDisputes, setActiveDisputes] = useState(false)
+    const [wallet, setWallet] = useState(false)
+    const [withdrawals, setWithdrawals] = useState(false)
+    const [activeBank, setActiveBank] = useState(false)
   return (
     <div
           className="bg-opacity-0 w-64 border-r px-3 py-4 fixed flex flex-col justify-between h-[calc(100vh-4rem)]"
@@ -56,19 +60,10 @@ function Sidebar() {
                 Games
                 </Button>
             </NavLink>
-            <NavLink to="/admin/reports" className={({isActive}) => {if (isActive) setActiveReports(true);}}>                
-            <Button
-                variant="secondary"
-                className={activeReports ? activeClass : inactiveClass}
-                >
-                <BarChart3 className="h-4 w-4" />
-                Reports
-                </Button>
-            </NavLink>
-            <NavLink to="/admin/wallet-transactions" className={({isActive}) => {if (isActive) setActivePayments(true);}}>
+            <NavLink to="/admin/wallet-transactions" className={({isActive}) => {if (isActive) setWallet(true);}}>
                 <Button
                 variant="secondary"
-                className={activePayments ? activeClass : inactiveClass}
+                className={wallet ? activeClass : inactiveClass}
                 >
                 <Wallet className="h-4 w-4" />
                 Bonus/Fines
@@ -83,31 +78,22 @@ function Sidebar() {
                 Deposits
                 </Button>
             </NavLink>
-            <NavLink to="/admin/transactions" className={({isActive}) => {if (isActive) setActivePayments(true);}}>
+            <NavLink to="/admin/withdrawals" className={({isActive}) => {if (isActive) setWithdrawals(true);}}>
                 <Button
                 variant="secondary"
-                className={activePayments ? activeClass : inactiveClass}
+                className={withdrawals ? activeClass : inactiveClass}
                 >
                 <Wallet className="h-4 w-4" />
-                Transactions
+                Withdrawals
                 </Button>
             </NavLink>
-            <NavLink to="/admin/banks" className={({isActive}) => {if (isActive) setActivePayments(true);}}>
+            <NavLink to="/admin/banks" className={({isActive}) => {if (isActive) setActiveBank(true);}}>
                 <Button
                 variant="secondary"
-                className={activePayments ? activeClass : inactiveClass}
+                className={activeBank ? activeClass : inactiveClass}
                 >
-                <Wallet className="h-4 w-4" />
+                <BsBank2 className="h-4 w-4" />
                 Accounts
-                </Button>
-            </NavLink>
-            <NavLink to="/admin/feedbacks" className={({isActive}) => {if (isActive) setActiveFeedbacks(true);}}>
-                <Button
-                variant="secondary"
-                className={activeFeedbacks ? activeClass : inactiveClass}
-                >
-                <Star className="h-4 w-4" />
-                Feedback & Reviews
                 </Button>
             </NavLink>
             <NavLink to="/admin/helpdesk" className={({isActive}) => {if (isActive) setActiveDisputes(true);}}>

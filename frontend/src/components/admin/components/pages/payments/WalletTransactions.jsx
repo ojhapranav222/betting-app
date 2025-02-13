@@ -30,7 +30,7 @@ import axios from 'axios';
 import Header from '../../ui/Header';
 import Sidebar from '../../ui/Sidebar';
 
-function Appointment() {
+function WalletTransactions() {
 
     const [depositsPerPage, setDepositsPerPage] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
@@ -39,12 +39,11 @@ function Appointment() {
     const [selectedDeposits, setSelectedDeposits] = useState([]);
     const [isAllSelected, setIsAllSelected] = useState(false);
     const navigate = useNavigate();
-    const [isOpen, setIsOpen] = useState(false);
     const baseUrl = import.meta.env.VITE_BACKEND_URL
 
     useEffect(() => {
         axios
-            .get(`${baseUrl}/api/v1/deposit/all`, {
+            .get(`${baseUrl}/api/v1/wallet/all`, {
                 headers:{
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -56,14 +55,15 @@ function Appointment() {
                 console.error(err);
             })
     }, [selectedDeposits, status, currentPage]);
+    console.log(depositsPerPage)
 
     function handleSelectAll(){
         try{
-            if (selectedDeposits.length===depositsPerPage.deposits.length){
+            if (selectedDeposits.length===depositsPerPage.transactions.length){
                 setSelectedDeposits([]);
                 setIsAllSelected(false);
             } else {
-                setSelectedDeposits(depositsPerPage.deposits.map((deposit) => deposit.id));
+                setSelectedDeposits(depositsPerPage.transactions.map((deposit) => deposit.id));
                 setIsAllSelected(true);
             }
         } catch(err){
@@ -104,7 +104,7 @@ function Appointment() {
             <main className="p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-semibold">Deposit History</h1>
+                    <h1 className="text-2xl font-semibold">Wallet Transaction History</h1>
                     <div className='flex gap-6'>
                         <Button
                             variant="secondary"
@@ -160,11 +160,11 @@ function Appointment() {
                                     <TableHead>Amount</TableHead>
                                     <TableHead>Status</TableHead>
                                     <TableHead>Payment Date</TableHead>
-                                    <TableHead>Screenshot</TableHead>
+                                    <TableHead>Category</TableHead>
                                 </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                {depositsPerPage.deposits && depositsPerPage.deposits.length>0 ? (depositsPerPage.deposits.map((deposit) => (
+                                {depositsPerPage.transactions && depositsPerPage.transactions.length>0 ? (depositsPerPage.transactions.map((deposit) => (
                                     <TableRow key={deposit.id}>
                                     <TableCell className="font-medium">
                                         <label className='flex items-center'>
@@ -194,30 +194,9 @@ function Appointment() {
                                     </TableCell>
                                     <TableCell>{deposit.created_at.split("T")[0]}</TableCell>
                                     <TableCell>
-                                    <img 
-                                        src={deposit.screenshot} 
-                                        alt="Deposit Screenshot"
-                                        className='h-20 cursor-pointer'
-                                        onClick={() => setIsOpen(true)}
-                                        />
-
-                                    
-
+                                        {deposit.transaction_type}
                                     </TableCell>
-                                    {isOpen && (
-                                            <div 
-                                            className="fixed inset-0 flex justify-center items-center"
-                                            onClick={() => setIsOpen(false)} // Close on click
-                                            >
-                                            <img 
-                                                src={deposit.screenshot} 
-                                                alt="Deposit Screenshot" 
-                                                className="max-h-3xl"
-                                            />
-                                            </div>
-                                        )}
                                     </TableRow>
-
                                 ))
                                 ) : (
                                     <TableRow>
@@ -262,7 +241,6 @@ function Appointment() {
                     </Card>
                 </div>
             </main>
-            
         </div>
     </div>
 
@@ -270,4 +248,4 @@ function Appointment() {
   )
 }
 
-export default Appointment
+export default WalletTransactions;
