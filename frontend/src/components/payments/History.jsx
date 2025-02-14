@@ -9,27 +9,38 @@ function History() {
 
   useEffect(() => {
     async function fetchHistory() {
-      try {
-        const withdrawalRes = await axios.get(`${baseUrl}/api/v1/withdrawal/me`, {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+        try {
+            let withdrawals = [];
+            try {
+                const withdrawalRes = await axios.get(`${baseUrl}/api/v1/withdrawal/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                withdrawals = withdrawalRes.data.withdrawals;
+            } catch (withdrawalError) {
+                if (withdrawalError.response && withdrawalError.response.status === 404) {
+                    console.warn("No withdrawals found, proceeding to deposits.");
+                } else {
+                    throw withdrawalError; // Rethrow if it's not a 404 error
                 }
-        });
-        const depositRes = await axios.get(`${baseUrl}/api/v1/deposit/me`, {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-        });
+            }
 
-        setWithdrawals(withdrawalRes.data.withdrawals);
-        setDeposits(depositRes.data.deposits);
-      } catch (error) {
-        console.error("Error fetching history:", error);
-      }
-    };
+            const depositRes = await axios.get(`${baseUrl}/api/v1/deposit/me`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            setWithdrawals(withdrawals);
+            setDeposits(depositRes.data.deposits);
+        } catch (error) {
+            console.error("Error fetching history:", error);
+        }
+    }
 
     fetchHistory();
-  }, []);
+}, []);
 
   return (
     <div className="bg-black min-h-screen p-8 text-white">
