@@ -31,8 +31,16 @@ const EditUser = () => {
     async function fetchData() {
         if (id) {
             try {
-                const response = await axios.get(`${baseUrl}/api/v1/user/admin/user-data/${id}`);
-                const deposits = await axios.get(`${baseUrl}/api/v1/deposit/user/${id}`);
+                const response = await axios.get(`${baseUrl}/api/v1/user/admin/user-data/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        }
+                });
+                const deposits = await axios.get(`${baseUrl}/api/v1/deposit/user/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
                 setUserData(response.data);
                 setTransaction(deposits.data)
             } catch (error) {
@@ -45,15 +53,6 @@ const EditUser = () => {
         fetchData();
         }, [id])
         console.log(transaction)
-
-    async function deleteTag(tagToDelete){
-        try {
-            await axios.delete(`http://localhost:3000/api/user/${id}/tags`, { data: { tag: tagToDelete } });
-            setTags((prevTags) => prevTags.filter(tag => tag !== tagToDelete));
-        } catch (error) {
-            console.error("Error deleting tag:", error);
-        }
-    };
 
     function handleChange(e){
         const { name, value } = e.target;
