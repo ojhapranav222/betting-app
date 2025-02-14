@@ -32,6 +32,8 @@ function AddAccount() {
         formData.append("upiId", upiId);
 
         try {
+            console.log('register bank being called')
+            console.log(localStorage.getItem('token'))
             const response = await axios.post(`${baseUrl}/api/v1/bank/register`, formData, {
                 headers: {
                     "Authorization": `Bearer ${localStorage.getItem("token")}`,
