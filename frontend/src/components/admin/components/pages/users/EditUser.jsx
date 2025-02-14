@@ -85,7 +85,7 @@ const EditUser = () => {
     async function handleAdd() {
         if (add !== '') {
           await axios.post(`${baseUrl}/api/v1/wallet/add`, {
-            userId: id,
+            userId: parseInt(id),
             amount: parseFloat(add)
         }, {
             headers: {
@@ -107,7 +107,7 @@ const EditUser = () => {
       async function handleReduce() {
         if (reduce !== ''){ 
             await axios.post(`${baseUrl}/api/v1/wallet/deduct`, {
-                userId: id,
+                userId: parseInt(id),
                 amount: parseFloat(reduce)
             }, {
                 headers: {
