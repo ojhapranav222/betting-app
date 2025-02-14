@@ -14,7 +14,11 @@ function Deposit() {
   // Retrieve primary bank details from localStorage
   useEffect(() => {
     async function fetchData(){
-      const response = await axios.get(`${baseUrl}/api/v1/bank/primary`);
+      const response = await axios.get(`${baseUrl}/api/v1/bank/primary`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
       setPrimaryBankDetails(response.data);
     }
 
