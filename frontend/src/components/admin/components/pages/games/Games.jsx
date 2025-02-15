@@ -166,7 +166,7 @@ export default function Games() {
 
   async function toggleBet(gameId) {
     try {
-        await axios.put(`${baseUrl}/api/v1/game/${gameId}/toggle-bet`, {
+        await axios.put(`${baseUrl}/api/v1/game/${gameId}/toggle-bet`, {}, {  // Empty object for data
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
@@ -175,7 +175,7 @@ export default function Games() {
     } catch (error) {
         console.error(error);
     }
-  }
+}
 
 
   return (
