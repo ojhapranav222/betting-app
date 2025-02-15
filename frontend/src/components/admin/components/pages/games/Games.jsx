@@ -166,7 +166,11 @@ export default function Games() {
 
   async function toggleBet(gameId) {
     try {
-        await axios.put(`${baseUrl}/api/v1/game/${gameId}/toggle-bet`);
+        await axios.put(`${baseUrl}/api/v1/game/${gameId}/toggle-bet`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
         fetchGameData();  // Refresh the games list after update
     } catch (error) {
         console.error(error);
