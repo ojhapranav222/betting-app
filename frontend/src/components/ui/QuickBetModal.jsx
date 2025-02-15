@@ -31,8 +31,6 @@ function QuickBetModal({ event, onClose }) {
         }
     };
 
-    console.log(event)
-
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-gray-900 p-6 rounded-lg text-white w-96">

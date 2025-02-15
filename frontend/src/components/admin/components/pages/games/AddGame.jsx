@@ -11,11 +11,8 @@ export default function AddGame() {
   // Form state for the game details
   const [teamA, setCountry1] = useState('');
   const [teamB, setCountry2] = useState('');
-  const [oddsTeamA, setPoint1] = useState('');
-  const [oddsTeamB, setPoint2] = useState('');
   const [matchName, setType] = useState('');
-  const [isLive, setIsLive] = useState(false);
-  const [startingIn, setStartingIn] = useState('');
+  const [endTime, setEndTime] = useState('');
   const [additionalNotes, setAdditionalNotes] = useState(null);
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -26,10 +23,7 @@ export default function AddGame() {
         matchName,
         teamA,
         teamB,
-        oddsTeamA,
-        oddsTeamB,
-        isLive,
-        ...(isLive ? null: {startTime: startingIn}),
+        endTime,
         ...(additionalNotes ? { additionalNotes } : null) // Only add additionalNotes if it's provided
     };
 
@@ -87,32 +81,6 @@ export default function AddGame() {
           />
         </div>
 
-        {/* Point 1 */}
-        <div className="mb-4">
-          <label className="block text-gray-700">Odds Team A</label>
-          <input
-            type="text"
-            value={oddsTeamA}
-            onChange={(e) => setPoint1(e.target.value)}
-            className="w-full border border-gray-300 p-2 rounded"
-            placeholder="Enter Point 1"
-            required
-          />
-        </div>
-
-        {/* Point 2 */}
-        <div className="mb-4">
-          <label className="block text-gray-700">Odds Team B</label>
-          <input
-            type="text"
-            value={oddsTeamB}
-            onChange={(e) => setPoint2(e.target.value)}
-            className="w-full border border-gray-300 p-2 rounded"
-            placeholder="Enter Point 2"
-            required
-          />
-        </div>
-
         {/* Game Type */}
         <div className="mb-4">
           <label className="block text-gray-700">Match Name</label>
@@ -126,33 +94,28 @@ export default function AddGame() {
           />
         </div>
 
-        {/* Is Live? */}
+        {/* Starting In (only if not live) */}
         <div className="mb-4">
-          <label className="block text-gray-700">Is Live?</label>
-          <select
-            value={isLive ? 'true' : 'false'}
-            onChange={(e) => setIsLive(e.target.value === 'true')}
+          <label className="block text-gray-700">Ending In</label>
+          <input
+            type="datetime-local"
+            value={endTime}
+            onChange={(e) => setEndTime(e.target.value)}
             className="w-full border border-gray-300 p-2 rounded"
-          >
-            <option value="true">Live</option>
-            <option value="false">Scheduled</option>
-          </select>
+            placeholder="Enter time until start (e.g., 2h 30m)"
+          />
         </div>
 
-        {/* Starting In (only if not live) */}
-        {!isLive && (
-          <div className="mb-4">
-            <label className="block text-gray-700">Starting In</label>
-            <input
-              type="datetime-local"
-              value={startingIn}
-              onChange={(e) => setStartingIn(e.target.value)}
-              className="w-full border border-gray-300 p-2 rounded"
-              placeholder="Enter time until start (e.g., 2h 30m)"
-              required={!isLive}
-            />
-          </div>
-        )}
+        {/* Additional Notes */}
+        <div className="mb-4">
+          <label className="block text-gray-700">Additional Notes</label>
+          <textarea
+            value={additionalNotes}
+            onChange={(e) => setAdditionalNotes(e.target.value)}
+            className="w-full border border-gray-300 p-2 rounded h-24 resize-none"
+            placeholder="Enter any additional notes..."
+          />
+        </div>
 
         <Button type="submit" variant="primary" className="w-full">
           Save Game

@@ -142,16 +142,6 @@ export default function User() {
                 <main className="p-6">
                     <div className="flex items-center justify-between">
                     <h1 className="text-2xl font-semibold">Users</h1>
-                    <div className='w-[250px] flex justify-evenly'>
-                    <Link to="/admin/user/add">
-                        <Button
-                        variant="secondary"
-                        className="w-auto bg-[#e0382a] text-white hover:text-[#e0382a] hover:border-2 hover:bg-white"
-                        >
-                            <FiPlus />
-                            Add User
-                        </Button>
-                    </Link>
                     <Button
                         variant="secondary"
                         className="w-auto bg-[white] text-[#e0382a] border-2"
@@ -159,7 +149,6 @@ export default function User() {
                             Export
                         </Button>
                         </div>
-                    </div>
 
                     {/* Stats */}
                     <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-4">
@@ -313,11 +302,7 @@ export default function User() {
                                         </div>
                                     </div>
                                     <div className='right flex text-[#e0382a]'>
-                                        <FaSortAlphaDown className='border-2 mx-1 h-9 w-9 p-2 rounded-md'/>
                                         <RiEditLine className='border-2 mx-1 h-9 w-9 p-2 rounded-md cursor-pointer' onClick={editSelectedUser}/>
-                                        <FiTrash className='border-2 mx-1 h-9 w-9 p-2 rounded-md cursor-pointer'
-                                            onClick={deleteSelectedUsers}
-                                        />
                                     </div>
                                 </div>
                             </CardHeader>

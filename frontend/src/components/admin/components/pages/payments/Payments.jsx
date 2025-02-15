@@ -30,6 +30,71 @@ import axios from 'axios';
 import Header from '../../ui/Header';
 import Sidebar from '../../ui/Sidebar';
 
+function DepositStatusCell({ deposit, activeDropdown, setActiveDropdown, fetchDeposits }) {
+    const [status, setStatus] = useState(deposit.status);
+    const baseUrl = import.meta.env.VITE_BACKEND_URL;
+  
+    const handleStatusUpdate = async (newStatus) => {
+      try {
+        await axios.put(
+          `${baseUrl}/api/v1/deposit/update-status`,
+          { depositId: deposit.id, status: newStatus },
+          {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          }
+        );
+  
+        setStatus(newStatus); // Update UI
+        setActiveDropdown(null); // Close dropdown
+      } catch (error) {
+        console.error("Error updating deposit status:", error);
+        alert("Failed to update deposit status. Please try again.");
+      }
+    };
+  
+    return (
+      <TableCell>
+        <div className="relative">
+          {/* Status Display */}
+          <span
+            className={`cursor-pointer px-4 py-1 rounded-md text-white ${
+              status === "pending"
+                ? "bg-[#ffbf00]"
+                : status === "approved"
+                ? "bg-green-600"
+                : status === "rejected"
+                ? "bg-red-600"
+                : "bg-black"
+            }`}
+            onClick={() =>
+              setActiveDropdown(activeDropdown === deposit.id ? null : deposit.id)
+            }
+          >
+            {status}
+          </span>
+  
+          {/* Dropdown (only when clicked & not already updated) */}
+          {activeDropdown === deposit.id && (
+            <div className="absolute top-full left-0 mt-2 w-32 bg-gray-800 shadow-lg rounded-md">
+              <button
+                className="block w-full text-left px-4 py-2 text-white hover:bg-green-600"
+                onClick={() => handleStatusUpdate("approved")}
+              >
+                ✅ Approve
+              </button>
+              <button
+                className="block w-full text-left px-4 py-2 text-white hover:bg-red-600"
+                onClick={() => handleStatusUpdate("rejected")}
+              >
+                ❌ Reject
+              </button>
+            </div>
+          )}
+        </div>
+      </TableCell>
+    );
+  }
+
 function Appointment() {
 
     const [depositsPerPage, setDepositsPerPage] = useState({});
@@ -40,6 +105,8 @@ function Appointment() {
     const [isAllSelected, setIsAllSelected] = useState(false);
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [activeDropdown, setActiveDropdown] = useState(null);
     const baseUrl = import.meta.env.VITE_BACKEND_URL
 
     useEffect(() => {
@@ -179,19 +246,11 @@ function Appointment() {
                                     <TableCell>{deposit.user_name}</TableCell>
                                     <TableCell>{deposit.user_id}</TableCell>
                                     <TableCell>{deposit.amount}</TableCell>
-                                    <TableCell>
-                                        <span className={`inline-flex items-center rounded-md px-4 py-1 text-white text-md ${
-                                            deposit.status === 'pending'
-                                            ? 'bg-[#ffbf00]'
-                                            : deposit.status === 'approved'
-                                            ? 'bg-green-600'
-                                            : deposit.status === 'Cancelled'
-                                            ? 'bg-red-600'
-                                            : 'bg-black'
-                                        }`}>
-                                            {deposit.status}
-                                        </span>
-                                    </TableCell>
+                                    <DepositStatusCell
+                                        deposit={deposit}
+                                        activeDropdown={activeDropdown}
+                                        setActiveDropdown={setActiveDropdown}
+                                    />
                                     <TableCell>{deposit.created_at.split("T")[0]}</TableCell>
                                     <TableCell>
                                         <img 

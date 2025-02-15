@@ -34,35 +34,10 @@ function Register() {
     async function handleSubmit(e){
         e.preventDefault();
         setErrorPassword('');
-  
-        // Check for at least one lowercase letter
-        if (!/[a-z]/.test(password)) {
-        setErrorPassword('Password must contain at least one lowercase letter.');
-        return;
-        }
-    
-        // Check for at least one uppercase letter
-        if (!/[A-Z]/.test(password)) {
-        setErrorPassword('Password must contain at least one uppercase letter.');
-        return;
-        }
-    
-        // Check for at least one special character
-        if (!/[!@#$%^&*]/.test(password)) {
-        setErrorPassword('Password must contain at least one special character (e.g., !, @, #, $, %, ^, &, *).');
-        return;
-        }
-    
-        // Check for minimum length of 8 characters
-        if (password.length < 8) {
-        setErrorPassword('Password must be at least 8 characters long.');
-        return;
-        }
 
         console.log('form submit clicked')
 
         try{
-
             const response = await axios.post(`${baseUrl}/api/v1/user/register`, formData)
             console.log(formData)
             navigate('/login')

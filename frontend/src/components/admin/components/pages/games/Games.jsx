@@ -44,13 +44,13 @@ function WinnerCell({ game, activeDropdown, setActiveDropdown }) {
       <div className="relative">
         {winner ? (
           // Display Winner Team Name
-          <span className="bg-black p-2 rounded-md text-white">
+          <span className="bg-yellow-500 p-2 rounded-md text-white">
             {winner === "team_a" ? game.team_a : game.team_b}
           </span>
         ) : (
           // Dropdown for Selecting Winner
           <span
-            className="bg-yellow-500 cursor-pointer p-1 text-center rounded-md"
+            className="cursor-pointer text-red-500 font-semibold p-1 text-center rounded-md"
             onClick={() =>
               setActiveDropdown(activeDropdown === game.id ? null : game.id)
             }
@@ -89,7 +89,6 @@ export default function Games() {
   const [isAllSelected, setIsAllSelected] = useState(false);
   // For pagination: current page
   const [currentPage, setCurrentPage] = useState(1);
-  const [gamesPerPage, setGamesPerPage] = useState(null);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const navigate = useNavigate();
   const baseUrl = import.meta.env.VITE_BACKEND_URL
@@ -107,56 +106,25 @@ export default function Games() {
     fetchGameData()
   }, [gameData.id]);  
   
-  // ----- Selection Handlers -----
   function handleSelectAll() {
     if (selectedGame.length === gameData.length) {
-      setSelectedGame([]);
-      setIsAllSelected(false);
+        setSelectedGame([]);
+        setIsAllSelected(false);
     } else {
-      // Compute absolute indices for games on the current page
-      const indices = gameData.map((_, index) => (currentPage - 1) * perPage + index);
-      setSelectedGame(indices);
-      setIsAllSelected(true);
+        setSelectedGame(gameData.map((game) => game.id));  // Select all game IDs
+        setIsAllSelected(true);
     }
-  }
+}
 
-  function handleGameSelect(absoluteIndex) {
+function handleGameSelect(gameId) {
     setSelectedGame((prevSelected) => {
-      if (prevSelected.includes(absoluteIndex)) {
-        return prevSelected.filter(id => id !== absoluteIndex);
-      } else {
-        return [...prevSelected, absoluteIndex];
-      }
+        if (prevSelected.includes(gameId)) {
+            return prevSelected.filter(id => id !== gameId);
+        } else {
+            return [...prevSelected, gameId];
+        }
     });
-  }
-
-  // ----- Delete / Edit Handlers -----
-  function deleteSelectedGames() {
-    if (selectedGame.length === 0) {
-      alert("No game selected");
-      return;
-    }
-    // Remove the selected games from the gameData array
-    const newGameData = gameData.filter((_, index) => !selectedGame.includes(index));
-    setGameData(newGameData);
-    // Update localStorage so the deletion persists (for this prototype)
-    localStorage.setItem('gameData', JSON.stringify(newGameData));
-    setSelectedGame([]);
-    alert("Selected games deleted");
-  }
-
-  function editSelectedGame() {
-    if (selectedGame.length === 0) {
-      alert("No game selected");
-      return;
-    } else if (selectedGame.length > 1) {
-      alert("Please select only one game to edit");
-      return;
-    }
-    // Navigate to the edit page using the absolute index as the game ID
-    const gameIndex = selectedGame[0];
-    navigate(`/admin/games/edit/${gameIndex}`);
-  }
+}
 
   function handlePageChange(page) {
     setCurrentPage(page);
@@ -283,10 +251,6 @@ export default function Games() {
                         />
                       </div>
                     </div>
-                    <div className="right flex text-[#e0382a]">
-                      <FaSortAlphaDown className="border-2 mx-1 h-9 w-9 p-2 rounded-md" />
-                      <FiTrash className="border-2 mx-1 h-9 w-9 p-2 rounded-md cursor-pointer" onClick={deleteSelectedGames} />
-                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -304,11 +268,11 @@ export default function Games() {
                             <span>#</span>
                           </label>
                         </TableHead>
-                        <TableHead>Country 1</TableHead>
-                        <TableHead>Country 2</TableHead>
+                        <TableHead>Team A</TableHead>
+                        <TableHead>Team B</TableHead>
                         <TableHead>Type</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Starting In</TableHead>
+                        <TableHead>End Date</TableHead>
+                        <TableHead>Ending In</TableHead>
                         <TableHead>Betting</TableHead>
                         <TableHead>Winner</TableHead>
                       </TableRow>
@@ -324,7 +288,7 @@ export default function Games() {
                                   <input
                                     type="checkbox"
                                     className="mx-2 h-4 w-4"
-                                    checked={game.id}
+                                    checked={selectedGame.includes(game.id)}
                                     onChange={() => handleGameSelect(game.id)}
                                   />
                                   {game.id}
@@ -333,15 +297,9 @@ export default function Games() {
                               <TableCell>{game.team_a}</TableCell>
                               <TableCell>{game.team_b}</TableCell>
                               <TableCell>{game.match_name}</TableCell>
+                              <TableCell>{game.end_time.split("T")[0]}</TableCell>
                               <TableCell>
-                                <span
-                                  className={`inline-flex items-center rounded-md px-4 py-1 text-white text-md ${game.is_live ? "bg-green-600" : "bg-blue-600"}`}
-                                >
-                                  {game.is_live ? "Live" : "Scheduled"}
-                                </span>
-                              </TableCell>
-                              <TableCell>
-                                {(!game.is_live && game.start_time) ? game.start_time : "-"}
+                                {game.end_time.split("T")[1].split("Z")}
                               </TableCell>
                               <TableCell>
                               <button 

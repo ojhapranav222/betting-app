@@ -71,15 +71,16 @@ function WalletTransactions() {
         }
     }
 
-    function handleAppointmentSelect(id){
-        setSelectedDeposits((prevSelectedAppointment) => {
-            if (prevSelectedAppointment.includes(id)){
-                return prevSelectedAppointment.filter((id) => id !== id);
+    function handleAppointmentSelect(id) { 
+        setSelectedDeposits((prevSelectedDeposits) => {
+            if (prevSelectedDeposits.includes(id)) {
+                return prevSelectedDeposits.filter((prevId) => prevId !== id);
             } else {
-                return [...prevSelectedAppointment, id];
+                return [...prevSelectedDeposits, id];
             }
-        })
+        });
     }
+    
 
     //changing papge
     function handlePageChange(newPage){
