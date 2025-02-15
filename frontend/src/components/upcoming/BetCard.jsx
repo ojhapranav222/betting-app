@@ -33,7 +33,7 @@ function BetCard() {
     }
   }
   return (
-    <div className='text-white w-[35%] mt-24 bg-gray-900 p-4 rounded-xl'>
+    <div className='text-white w-[35%] mt-24 bg-gray-900 p-4 rounded-xl overflow-y-scroll'>
         <div className='flex gap-6 font-semibold'>
             <button className='hover:bg-transparent rounded-full px-6 py-1' style={{background: 'linear-gradient(135deg, #0D47A1, #1565C0, #2196F3, #43A047)'}}>My Bets</button>
         </div>

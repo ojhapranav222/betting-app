@@ -7,7 +7,7 @@ function UpcomingGames() {
   return (
     <div className='bg-black relative w-full h-screen overflow-hidden'>
         <Navbar2 />
-        <div className='flex justify-around items-start'>
+        <div className='flex justify-around items-start h-screen overflow-y-scroll'>
             <Events />
             <BetCard />
         </div>

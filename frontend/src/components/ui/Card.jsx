@@ -3,16 +3,23 @@ import SpotlightCard from "./Spotlight";
 import { IoIosTimer } from "react-icons/io";
 
 function Card({ country1, country2, endTime, type, onBetClick, bet }) {
-  const calculateTimeLeft = () => {
-    const difference = new Date(endTime) - new Date();
-    return difference > 0
-      ? {
-          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((difference / (1000 * 60)) % 60),
-          seconds: Math.floor((difference / 1000) % 60),
-          isActive: true, // Betting still active
-        }
-      : { hours: 0, minutes: 0, seconds: 0, isActive: false }; // Betting closed
+  function calculateTimeLeft() {
+    const now = new Date();
+    const end = new Date(endTime.replace(" ", "T")); // Ensure proper format
+
+    const difference = end - now;
+
+    if (difference > 0) {
+        return {
+            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+            minutes: Math.floor((difference / (1000 * 60)) % 60),
+            seconds: Math.floor((difference / 1000) % 60),
+            isActive: true, // Betting still active
+        };
+    } else {
+        return { days: 0, hours: 0, minutes: 0, seconds: 0, isActive: false }; // Betting closed
+    }
   };
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
@@ -52,14 +59,20 @@ function Card({ country1, country2, endTime, type, onBetClick, bet }) {
           <span className="text-gray-400 flex items-center gap-2 text-sm">
             <IoIosTimer /> Bet Ends In:
           </span>
-          <div className="text-white bg-gray-800 p-2 rounded-lg text-center w-12">
+
+          {timeLeft?.days !== 0 && (<div className="text-white bg-gray-800 p-2 rounded-lg text-center w-12">
+            <p className="text-xl font-bold">{timeLeft.days}</p>
+            <p className="text-sm">Days</p>
+          </div>)}
+          {timeLeft?.hours != 0 && (<div className="text-white bg-gray-800 p-2 rounded-lg text-center w-12">
             <p className="text-xl font-bold">{timeLeft.hours}</p>
             <p className="text-sm">Hrs</p>
-          </div>
+          </div>)}
+          {timeLeft?.minutes != 0 && (
           <div className="text-white bg-gray-800 p-2 rounded-lg text-center w-12">
             <p className="text-xl font-bold">{timeLeft.minutes}</p>
             <p className="text-sm">Min</p>
-          </div>
+          </div>)}
           <div className="text-white bg-gray-800 p-2 rounded-lg text-center w-12">
             <p className="text-xl font-bold">{timeLeft.seconds}</p>
             <p className="text-sm">Sec</p>
