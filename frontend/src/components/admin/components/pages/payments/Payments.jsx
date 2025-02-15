@@ -39,7 +39,7 @@ function Appointment() {
     const [selectedDeposits, setSelectedDeposits] = useState([]);
     const [isAllSelected, setIsAllSelected] = useState(false);
     const navigate = useNavigate();
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(null);
     const baseUrl = import.meta.env.VITE_BACKEND_URL
 
     useEffect(() => {
@@ -194,28 +194,15 @@ function Appointment() {
                                     </TableCell>
                                     <TableCell>{deposit.created_at.split("T")[0]}</TableCell>
                                     <TableCell>
-                                    <img 
-                                        src={deposit.screenshot} 
-                                        alt="Deposit Screenshot"
-                                        className='h-20 cursor-pointer'
-                                        onClick={() => setIsOpen(true)}
+                                        <img 
+                                            src={deposit.screenshot} 
+                                            alt="Deposit Screenshot"
+                                            className="h-20 cursor-pointer"
+                                            onClick={() => {setIsOpen(deposit.screenshot)
+                                                console.log(deposit.screenshot)
+                                            }}
                                         />
-
-                                    
-
                                     </TableCell>
-                                    {isOpen && (
-                                            <div 
-                                            className="fixed inset-0 flex justify-center items-center"
-                                            onClick={() => setIsOpen(false)} // Close on click
-                                            >
-                                            <img 
-                                                src={deposit.screenshot} 
-                                                alt="Deposit Screenshot" 
-                                                className="max-h-3xl"
-                                            />
-                                            </div>
-                                        )}
                                     </TableRow>
 
                                 ))
@@ -228,6 +215,16 @@ function Appointment() {
                                 )}
                                 </TableBody>
                             </Table>
+                            {isOpen && (
+                                <div
+                                    className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50"
+                                    onClick={() => setIsOpen(null)}
+                                >
+                                    <div className="p-4 bg-white rounded-lg shadow-lg">
+                                        <img src={isOpen} alt="Deposit Screenshot" className="max-h-screen" />
+                                    </div>
+                                </div>
+                            )}
                         </CardContent>
                         <CardContent>
                             <div className='flex items-center justify-between'>
