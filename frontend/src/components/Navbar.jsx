@@ -64,9 +64,14 @@ function Navbar() {
       {isLoggedIn ? (
         <div className='flex gap-12 items-center'>
             {admin && (<Link to='/admin/dashboard' className='text-xl font-semibold text-white cursor-pointer px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Admin</Link>)}
-          <Link to='/games' className='text-xl font-semibold text-white cursor-pointer px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Games</Link>
-          <div className='text-white text-3xl cursor-pointer' onClick={toggleDrowWallet}>
-            <IoWalletOutline />
+          <Link to='/games' className='text-xl font-semibold text-white cursor-pointer px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Bet Now</Link>
+          <div className="relative">
+            <div className="text-white text-3xl cursor-pointer" onClick={toggleDrowWallet}>
+              <IoWalletOutline />
+            </div>
+            <span className="absolute -top-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+              ₹{user?.balance}
+            </span>
           </div>
           {dropWallet && ( 
             <ul className='bg-white absolute top-20 rounded-xl right-24'>

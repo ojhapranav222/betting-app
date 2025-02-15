@@ -7,7 +7,6 @@ function Landing() {
   return (
     <div className='flex flex-col'>
         <Main />
-        <Upcoming />
         <Features />
     </div>
   )

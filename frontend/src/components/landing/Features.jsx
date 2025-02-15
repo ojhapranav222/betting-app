@@ -8,7 +8,7 @@ import { IoShieldCheckmarkOutline } from "react-icons/io5";
 function Features() {
   return (
     <div className='bg-black'>
-        <h1 className="text-5xl font-bold gap-2 text-white text-center">Why
+        <h1 className="text-5xl font-bold gap-2 text-white text-center mt-16">Why
             <GradientText
             colors={["#40ffaa", "#FFC107", "#FFEB3B", "#FF5722", "#FDD835"]}
             animationSpeed={3}

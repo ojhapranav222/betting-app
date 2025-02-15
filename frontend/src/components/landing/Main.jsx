@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../Navbar";
 import Waves from "../ui/WaveLines";
 import GradientText from "../ui/GradientText";
+import { Link } from "react-router-dom";
 
 function Main() {
   return (
@@ -39,8 +40,12 @@ function Main() {
             </h1>
             <p className="font-semibold text-xl text-center">Join thousands of players and experience the thrill of our premium <br /> casino games with incredible bonuses.</p>
             <div className="flex gap-4 mt-4">
+              <Link to="/games">
                 <button className="text-xl bg-transparent hover:bg-white hover:text-black border border-white rounded-full px-6 py-2 text-white transition-all duration-300">Bet Now</button>
+              </Link>
+              <Link to="/games">
                 <button className="text-xl bg-white hover:bg-transparent hover:text-white border border-white rounded-full px-6 py-2 text-black transition-all duration-300">View Live Matches</button>
+              </Link>
             </div>
         </div>
         <img src="/cricket.png" alt="" className="w-[30rem]" />

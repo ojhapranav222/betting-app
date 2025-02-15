@@ -42,12 +42,13 @@ function BetCard() {
           {betData.bets?.map((bet, index) => (
             <div key={index} className="bg-gray-800 p-3 rounded-lg shadow-md border border-gray-600">
               <p className="text-gray-300 text-sm">Match: <span className="font-bold">{bet.match_name}</span></p>
-              <p className="text-gray-300 text-sm">Team: <span className="font-bold">{bet.team_name}</span></p>
+              <p className="text-gray-300 text-sm">Your Team: <span className="font-bold">{bet.team_name}</span></p>
+              <p className="text-gray-300 text-sm">Opposing Team: <span className="font-bold">{bet.team_name === bet.team_a ? bet.team_b : bet.team_a}</span></p>
               <p className="text-gray-300 text-sm">Amount: <span className="font-bold">₹{bet.amount_bet}</span></p>
               <p className={`text-sm font-bold ${bet.status === 'won' ? 'text-green-500' : 'text-red-500'}`}>
                 Status: {bet.status.toUpperCase()}
               </p>
-              {bet.status !== "cancelled" && (<button
+              {bet.status === "approved" && (<button
                 onClick={() => handleCancel(bet.id)}
                 className="bg-red-600 mt-4 text-white text-sm px-3 py-1 rounded-lg hover:bg-red-700 transition"
               >
