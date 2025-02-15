@@ -48,7 +48,7 @@ function BetCard() {
               <p className={`text-sm font-bold ${bet.status === 'won' ? 'text-green-500' : 'text-red-500'}`}>
                 Status: {bet.status.toUpperCase()}
               </p>
-              {bet.status === "approved" && (<button
+              {!bet.winner && bet.bet && bet.status === "approved" && (<button
                 onClick={() => handleCancel(bet.id)}
                 className="bg-red-600 mt-4 text-white text-sm px-3 py-1 rounded-lg hover:bg-red-700 transition"
               >
