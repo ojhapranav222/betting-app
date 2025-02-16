@@ -2,13 +2,20 @@ import React, { useEffect, useState } from "react";
 import SpotlightCard from "./Spotlight";
 import { IoIosTimer } from "react-icons/io";
 
-function Card({ country1, country2, createdAt, endTime, type, onBetClick, bet }) {
+function Card({ country1, country2, endTime, type, onBetClick, bet }) {
   function calculateTimeLeft() {
-    const now = new Date(); // Get current local time
-    const end = new Date(endTime);
+    if (!endTime) {
+        console.error("endTime is undefined or null");
+        return { days: 0, hours: 0, minutes: 0, seconds: 0, isActive: false };
+    }
 
-    console.log("Current Time (IST):", now);
-    console.log("End Time (IST):", end, endTime);
+    // Convert stored time (UTC by default) into IST correctly
+    const formattedEndTime = `${endTime} GMT+0530`; // Append IST timezone
+    const now = new Date();
+    const end = new Date(formattedEndTime); // Now it treats it as IST
+
+    console.log("Stored End Time:", endTime);
+    console.log("Formatted End Time (IST):", end);
 
     const difference = end - now;
 
@@ -18,10 +25,10 @@ function Card({ country1, country2, createdAt, endTime, type, onBetClick, bet })
             hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
             minutes: Math.floor((difference / (1000 * 60)) % 60),
             seconds: Math.floor((difference / 1000) % 60),
-            isActive: true, // Betting still active
+            isActive: true,
         };
     } else {
-        return { days: 0, hours: 0, minutes: 0, seconds: 0, isActive: false }; // Betting closed
+        return { days: 0, hours: 0, minutes: 0, seconds: 0, isActive: false };
     }
   }
 

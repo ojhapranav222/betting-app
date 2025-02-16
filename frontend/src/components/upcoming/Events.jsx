@@ -37,7 +37,6 @@ function Events() {
               <Card
                 country1={event.team_a}
                 country2={event.team_b}
-                createdAt={event.created_at}
                 endTime={event.end_time}
                 type={event.match_name}
                 bet={event.bet}
