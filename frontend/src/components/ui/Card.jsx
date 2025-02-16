@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import SpotlightCard from "./Spotlight";
 import { IoIosTimer } from "react-icons/io";
 
-function Card({ country1, country2, endTime, type, onBetClick, bet }) {
+function Card({ country1, country2, createdAt, endTime, type, onBetClick, bet }) {
   function calculateTimeLeft() {
-    const now = new Date();
-    const end = new Date(endTime.replace(" ", "T")); // Ensure proper format
+    const now = new Date(createdAt);
+    console.log("created_at:",now, createdAt);
+    const end = new Date(endTime);
+    console.log("end_Time:", end, endTime);
 
     const difference = end - now;
 
@@ -37,6 +39,7 @@ function Card({ country1, country2, endTime, type, onBetClick, bet }) {
 
     return () => clearInterval(timer);
   }, [endTime]);
+
 
   return (
     <SpotlightCard
