@@ -9,14 +9,19 @@ function Card({ country1, country2, endTime, type, onBetClick, bet }) {
         return { days: 0, hours: 0, minutes: 0, seconds: 0, isActive: false };
     }
 
-    // Convert stored time (UTC by default) into IST correctly
-    const formattedEndTime = `${endTime} GMT+0530`; // Append IST timezone
-    const now = new Date();
-    const end = new Date(formattedEndTime); // Now it treats it as IST
+    // Manually extract year, month, day, hours, minutes, and seconds
+    const [year, month, day, hours, minutes, seconds] = endTime
+        .replace("T", " ") // Ensure format consistency
+        .replace("Z", "") // Remove trailing Z if present
+        .split(/[- :]/); // Split by -, space, or :
+
+    // Construct a date in IST (manually)
+    const end = new Date(year, month - 1, day, hours, minutes, seconds);
 
     console.log("Stored End Time:", endTime);
-    console.log("Formatted End Time (IST):", end);
+    console.log("Parsed End Time (IST):", end);
 
+    const now = new Date();
     const difference = end - now;
 
     if (difference > 0) {
@@ -31,6 +36,7 @@ function Card({ country1, country2, endTime, type, onBetClick, bet }) {
         return { days: 0, hours: 0, minutes: 0, seconds: 0, isActive: false };
     }
   }
+
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   const [betActive, setBetActive] = useState(bet);
