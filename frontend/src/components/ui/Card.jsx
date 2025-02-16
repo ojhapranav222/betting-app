@@ -4,10 +4,11 @@ import { IoIosTimer } from "react-icons/io";
 
 function Card({ country1, country2, createdAt, endTime, type, onBetClick, bet }) {
   function calculateTimeLeft() {
-    const now = new Date(createdAt);
-    console.log("created_at:",now, createdAt);
-    const end = new Date(endTime);
-    console.log("end_Time:", end, endTime);
+    const now = new Date(); // Get current local time
+    const end = new Date(endTime + " GMT+0530"); // Ensure it's in IST
+
+    console.log("Current Time (IST):", now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
+    console.log("End Time (IST):", end.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
 
     const difference = end - now;
 
@@ -22,7 +23,7 @@ function Card({ country1, country2, createdAt, endTime, type, onBetClick, bet })
     } else {
         return { days: 0, hours: 0, minutes: 0, seconds: 0, isActive: false }; // Betting closed
     }
-  };
+  }
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   const [betActive, setBetActive] = useState(bet);
