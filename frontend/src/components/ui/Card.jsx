@@ -39,7 +39,7 @@ function Card({ country1, country2, createdAt, endTime, type, onBetClick, bet })
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [endTime]);
+  }, []);
 
 
   return (
