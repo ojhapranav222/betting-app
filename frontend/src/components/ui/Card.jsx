@@ -5,10 +5,10 @@ import { IoIosTimer } from "react-icons/io";
 function Card({ country1, country2, createdAt, endTime, type, onBetClick, bet }) {
   function calculateTimeLeft() {
     const now = new Date(); // Get current local time
-    const end = new Date(endTime + " GMT+0530"); // Ensure it's in IST
+    const end = new Date(endTime);
 
-    console.log("Current Time (IST):", now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
-    console.log("End Time (IST):", end.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
+    console.log("Current Time (IST):", now);
+    console.log("End Time (IST):", end, endTime);
 
     const difference = end - now;
 
