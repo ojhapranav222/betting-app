@@ -30,16 +30,24 @@ function Card({ country1, country2, createdAt, endTime, type, onBetClick, bet })
 
   useEffect(() => {
     const timer = setInterval(() => {
-      const time = calculateTimeLeft();
-      setTimeLeft(time);
+        const time = calculateTimeLeft();
+        
+        setTimeLeft(prevTime => {
+            if (JSON.stringify(prevTime) !== JSON.stringify(time)) {
+                return time; // Only update if there's a change
+            }
+            return prevTime; // Prevent unnecessary re-renders
+        });
 
-      if (!time.isActive) {
-        setBetActive(false); // Disable betting when time is up
-      }
+        if (!time.isActive) {
+            setBetActive(false);
+            clearInterval(timer); // Stop interval when expired
+        }
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+    return () => clearInterval(timer); // Cleanup on unmount
+  }, []); // ✅ Empty dependency array, runs only once
+
 
 
   return (
