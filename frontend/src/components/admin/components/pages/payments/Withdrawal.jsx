@@ -36,7 +36,11 @@ function StatusCell({ deposit, activeDropdown, setActiveDropdown }) {
   
     async function handleStatusChange (newStatus) {
       try {
-        await axios.patch(`${baseUrl}/api/v1/withdrawal/${newStatus}/${deposit.id}`); // API call
+        await axios.patch(`${baseUrl}/api/v1/withdrawal/${newStatus}/${deposit.id}`, {}, {
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            }
+        }); // API call
         setStatus(newStatus); // Update UI
         setActiveDropdown(null); // Close dropdown
       } catch (error) {
@@ -229,6 +233,7 @@ function Withdrawal() {
                                     </TableHead>
                                     <TableHead>User Name</TableHead>
                                     <TableHead>User Id</TableHead>
+                                    <TableHead>Upi Id</TableHead>
                                     <TableHead>Amount</TableHead>
                                     <TableHead>Status</TableHead>
                                     <TableHead>Request Date</TableHead>
@@ -249,6 +254,7 @@ function Withdrawal() {
                                     </TableCell>
                                     <TableCell>{deposit.user_name}</TableCell>
                                     <TableCell>{deposit.user_id}</TableCell>
+                                    <TableCell>{deposit.upi_id}</TableCell>
                                     <TableCell>{deposit.amount}</TableCell>
                                     <TableCell>
                                         <StatusCell

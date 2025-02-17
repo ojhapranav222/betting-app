@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 function WithdrawalForm() {
   const [amount, setAmount] = useState("");
+  const [upiId, setUpiId] = useState("");
   const baseUrl = import.meta.env.VITE_BACKEND_URL
   const navigate = useNavigate();
 
@@ -14,7 +15,7 @@ function WithdrawalForm() {
     }
 
     try {
-      await axios.post(`${baseUrl}/api/v1/withdrawal/request`, { amount }, {
+      await axios.post(`${baseUrl}/api/v1/withdrawal/request`, { amount, upiId }, {
         headers: {
           "Authorization": `Bearer ${localStorage.getItem("token")}`
           }
@@ -37,6 +38,16 @@ function WithdrawalForm() {
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
         className="bg-black text-white mb-6 border-b border-white outline-none px-4 py-2 w-full"
+        required
+      />
+
+      <input
+        type="text"
+        placeholder="Enter your Upi Id"
+        value={upiId}
+        onChange={(e) => setUpiId(e.target.value)}
+        className="bg-black text-white mb-6 border-b border-white outline-none px-4 py-2 w-full"
+        required
       />
 
       <button
