@@ -62,12 +62,12 @@ function Register() {
             />
         </div>
         <div className='relative flex flex-col items-end justify-around h-screen'>
-            <div className='flex flex-col items-center -mt-12'>
-              <img src="/register.png" alt="" className='h-64 relative -top-4 z-10' />
+            <div className='flex flex-col items-center '>
+              <img src="/register.png" alt="" className='h-32 relative -top-4 z-10' />
                 
               <form className='rounded-3xl' onSubmit={handleSubmit}> 
                 <SpotlightCard 
-                  className="border border-white px-20 pt-12 rounded-lg -mt-28 flex flex-col gap-6" 
+                  className="border border-white px-20 pt-12 rounded-lg flex flex-col gap-6" 
                   spotlightColor="rgba(255, 0, 0, 0.2)"
                 >
                   <div className='flex gap-4'>
