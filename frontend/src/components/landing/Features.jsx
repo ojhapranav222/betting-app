@@ -18,26 +18,26 @@ function Features() {
             NXT Gamer?
             </GradientText>
         </h1>
-        <div className='grid grid-cols-2 grid-rows-2 mt-4 py-6 gap-y-24 text-white'>
+        <div className='grid sm:grid-cols-2 grid-cols-1 sm:grid-rows-2 grid-rows-4 mt-4 py-6 gap-y-24 text-white sm:px-0 px-10'>
             <div className='flex flex-col justify-center text-center items-center gap-4'>
                 <div className='text-5xl text-green-500 h-20 w-20 flex justify-center items-center rounded-full bg-green-500 bg-opacity-10'><AiOutlineThunderbolt /></div>
                 <h2 className='text-xl font-bold'>Instant Payouts</h2>
-                <p className='text-sm text-gray-400'>Withdraw your winnings instantly to your preferred payment method</p>
+                <p className='sm:text-sm text-gray-400'>Withdraw your winnings instantly to your preferred payment method</p>
             </div>
             <div className='flex flex-col justify-center text-center items-center gap-4'>
                 <div className='text-5xl text-green-500 h-20 w-20 flex justify-center items-center rounded-full bg-green-500 bg-opacity-10'><VscGraph /></div>
                 <h2 className='text-xl font-bold'>Best Odds</h2>
-                <p className='text-sm text-gray-400'>Get competitive odds across all cricket matches and tournaments</p>
+                <p className='sm:text-sm text-gray-400'>Get competitive odds across all cricket matches and tournaments</p>
             </div>
             <div className='flex flex-col justify-center text-center items-center gap-4'>
                 <div className='text-5xl text-green-500 h-20 w-20 flex justify-center items-center rounded-full bg-green-500 bg-opacity-10'><IoShieldCheckmarkOutline /></div>
                 <h2 className='text-xl font-bold'>Secure Platform</h2>
-                <p className='text-sm text-gray-400'>Your funds and personal information are protected with advanced security</p>
+                <p className='sm:text-sm text-gray-400'>Your funds and personal information are protected with advanced security</p>
             </div>
             <div className='flex flex-col justify-center text-center items-center gap-4'>
                 <div className='text-5xl text-green-500 h-20 w-20 flex justify-center items-center rounded-full bg-green-500 bg-opacity-10'><CiMobile1 /></div> 
                 <h2 className='text-xl font-bold'>Mobile Betting</h2>
-                <p className='text-sm text-gray-400'>Bet on your favorite matches anytime, anywhere with our mobile platform</p>
+                <p className='sm:text-sm text-gray-400'>Bet on your favorite matches anytime, anywhere with our mobile platform</p>
             </div>
         </div>
     </div>

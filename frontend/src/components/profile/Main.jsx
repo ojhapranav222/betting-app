@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Navbar2 from '../Navbar2'
 import Sidebar from './Sidebar'
 import axios from 'axios';
+import useSmallScreen from '../ui/SmallScreen';
 
 function Main() {
     const [user, setUser] = useState(null);
-    const baseUrl = import.meta.env.VITE_BACKEND_URL
+    const isSmallScreen = useSmallScreen();
+    const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
     useEffect(() => {
         async function fetchData(){
@@ -26,9 +28,9 @@ function Main() {
     <div className="relative w-full h-screen overflow-hidden" style={{background: 'linear-gradient(135deg, #0D47A1, #1565C0, #2196F3, #43A047)'}}>
         <div className='bg-black absolute h-screen w-screen opacity-20'></div>
         <Navbar2 />
-        <div className='relative pl-36 z-10  pt-12 flex items-center h-screen'>
-            <Sidebar />
-            <main className='flex justify-center w-full flex-col items-center px-20 text-white'>
+        <div className='relative sm:pl-36 px-10 z-10  pt-12 flex items-center h-screen'>
+            {!isSmallScreen && <Sidebar />}
+            <main className='flex justify-center w-full flex-col items-center sm:px-20 text-white'>
                 <h1 className='text-xl font-bold p-4 border-b border-b-white w-[80%] text-center'>
                     Personal Information
                 </h1>

@@ -28,6 +28,7 @@ import {
 import axios from 'axios';
 import Sidebar from '../../ui/Sidebar';
 import Header from '../../ui/Header';
+import useSmallScreen from '../../../../ui/SmallScreen';
 
 const CardIcon = () => (
     <div className="flex items-center justify-center h-14 w-14 rounded-full bg-[#f7f7d8] absolute top-[40px] right-[50px]">
@@ -45,6 +46,7 @@ export default function User() {
     const [isAllSelected, setIsAllSelected] = useState(false);
     const [status, setStatus] = useState("");
     const navigate = useNavigate();
+    const isSmallScreen = useSmallScreen();
     const baseUrl = import.meta.env.VITE_BACKEND_URL
 
     function handleStatusChange(newStatus){
@@ -131,13 +133,13 @@ export default function User() {
     }
     
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-100 overflow-hidden">
         <Header />
         <div className="flex flex-row items-start mt-16">
             {/* Sidebar */}
             <Sidebar />
             {/* Main Content */}
-            <div className="flex-1 ml-64">
+            <div className="flex-1 sm:ml-64">
                 {/* User Content */}
                 <main className="p-6">
                     <div className="flex items-center justify-between">
@@ -151,7 +153,7 @@ export default function User() {
                         </div>
 
                     {/* Stats */}
-                    <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-4">
+                    {!isSmallScreen && (<div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-4">
                         <Card className="h-[150px] rounded-tl-lg rounded-bl-lg rounded-tr-none rounded-br-none border-none relative overflow-hidden">
                             <div className="h-full w-[1.3px] bg-gray-100 absolute right-0 top-0"></div>
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 relative">
@@ -273,10 +275,10 @@ export default function User() {
                             </div>
                             </CardContent>
                         </Card>
-                    </div>
+                    </div>)}
 
                     {/* Table */}
-                    <div className="w-full mt-6">
+                    <div className="w-screen sm:w-[80%] mt-6 overflow-hidden sm:overflow-auto">
                         <Card className="border-none">
                             <CardHeader>
                                 <div className="header flex justify-between">
@@ -302,12 +304,12 @@ export default function User() {
                                         </div>
                                     </div>
                                     <div className='right flex text-[#e0382a]'>
-                                        <RiEditLine className='border-2 mx-1 h-9 w-9 p-2 rounded-md cursor-pointer' onClick={editSelectedUser}/>
+                                        <RiEditLine className='border-2 mx-1 h-9 w-9 p-2 absolute left-0 sm:static rounded-md cursor-pointer' onClick={editSelectedUser}/>
                                     </div>
                                 </div>
                             </CardHeader>
                             <CardContent>
-                                <Table>
+                                <Table className = 'w-screen overflow-x-scroll'>
                                     <TableHeader className='border-b-2'>
                                     <TableRow>
                                         <TableHead>

@@ -169,14 +169,14 @@ function Withdrawal() {
       };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-100 w-screen sm:w-auto overflow-x-hidden">
         {/* Header Section */}
       <Header />
       <div className="flex flex-row items-start justify-between mt-16">
         {/* Sidebar */}
         <Sidebar />
         {/* Main */}
-        <div className='flex-1 ml-64'>
+        <div className='flex-1 sm:ml-64'>
             <main className="p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between">
@@ -191,7 +191,7 @@ function Withdrawal() {
                     </div>
                 </div>
                 {/* Table */}
-                <div className="w-full mt-6">
+                <div className="w-screen mt-6 overflow-x-scroll">
                     <Card className="border-none">
                         <CardHeader>
                             <div className="header flex justify-between">
@@ -222,7 +222,7 @@ function Withdrawal() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <Table>
+                            <Table className='w-screen sm:w-[50%] overflow-x-scroll'>
                                 <TableHeader className='border-b-2'>
                                 <TableRow>
                                     <TableHead>
@@ -234,6 +234,10 @@ function Withdrawal() {
                                     <TableHead>User Name</TableHead>
                                     <TableHead>User Id</TableHead>
                                     <TableHead>Upi Id</TableHead>
+                                    <TableHead>Account Number</TableHead>
+                                    <TableHead>Account Holder Name</TableHead>
+                                    <TableHead>Bank Name</TableHead>
+                                    <TableHead>IFSC Code</TableHead>
                                     <TableHead>Amount</TableHead>
                                     <TableHead>Status</TableHead>
                                     <TableHead>Request Date</TableHead>
@@ -255,6 +259,10 @@ function Withdrawal() {
                                     <TableCell>{deposit.user_name}</TableCell>
                                     <TableCell>{deposit.user_id}</TableCell>
                                     <TableCell>{deposit.upi_id}</TableCell>
+                                    <TableCell>{deposit.account_number}</TableCell>
+                                    <TableCell>{deposit.account_holder_name}</TableCell>
+                                    <TableCell>{deposit.bank_name}</TableCell>
+                                    <TableCell>{deposit.ifsc_code}</TableCell>
                                     <TableCell>{deposit.amount}</TableCell>
                                     <TableCell>
                                         <StatusCell

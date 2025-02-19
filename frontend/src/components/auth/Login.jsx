@@ -3,12 +3,14 @@ import MagnetLines from '../ui/MagnetLines';
 import { Link, useNavigate } from 'react-router-dom';
 import SpotlightCard from '../ui/Spotlight';
 import axios from 'axios';
+import useSmallScreen from '../ui/SmallScreen';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('')
   const navigate = useNavigate();
+  const isSmallScreen = useSmallScreen();
   const baseUrl = import.meta.env.VITE_BACKEND_URL
 
   async function handleSubmit(event) {
@@ -61,7 +63,7 @@ function Login() {
         </div>
         <Link to="/" className='text-white font-semibold border border-white py-2 rounded-full hover:text-[#070b19] hover:bg-white transition-all duration-300 w-28 flex justify-center'>Back</Link>
       </div>
-      <div>
+      {!isSmallScreen && (<div>
         <MagnetLines
           rows={10}
           columns={9}
@@ -72,7 +74,7 @@ function Login() {
           baseAngle={0}
           style={{ margin: "2rem auto" }}
         />
-      </div>
+      </div>)}
     </div>
   );
 }

@@ -3,8 +3,11 @@ import Navbar from "../Navbar";
 import Waves from "../ui/WaveLines";
 import GradientText from "../ui/GradientText";
 import { Link } from "react-router-dom";
+import useSmallScreen from "../ui/SmallScreen";
 
 function Main() {
+    const isSmallScreen = useSmallScreen();
+
   return (
     <div className="relative w-full h-screen overflow-hidden" style={{background: 'linear-gradient(135deg, #0D47A1, #1565C0, #2196F3, #43A047)'}}>
         <Navbar />
@@ -27,7 +30,7 @@ function Main() {
 
       {/* Content over the video */}
       <div className="w-full h-screen flex justify-around items-center relative">
-        <div className="relative z-10 flex flex-col items-center justify-center gap-4 h-full text-white">
+        <div className="relative z-10 flex flex-col items-center justify-center gap-4 h-full text-white text-center sm:text-left">
             <h1 className="text-6xl font-bold gap-2">Welcome to the Ultimate
             <GradientText
             colors={["#40ffaa", "#FFC107", "#FFEB3B", "#FF5722", "#FDD835"]}
@@ -38,7 +41,7 @@ function Main() {
             Cricket Experience
             </GradientText>
             </h1>
-            <p className="font-semibold text-xl text-center">Join thousands of players and experience the thrill of our premium <br /> features with incredible bonuses.</p>
+            <p className="font-semibold text-xl text-center px-10 sm:px-0">Join thousands of players and experience the thrill of our premium <br /> features with incredible bonuses.</p>
             <div className="flex gap-4 mt-4">
               <Link to="/games">
                 <button className="text-xl bg-transparent hover:bg-white hover:text-black border border-white rounded-full px-6 py-2 text-white transition-all duration-300">Bet Now</button>
@@ -48,7 +51,7 @@ function Main() {
               </Link>
             </div>
         </div>
-        <img src="/cricket.png" alt="" className="w-[30rem]" />
+        {!isSmallScreen && <img src="/cricket.png" alt="" className="w-[30rem]" />}
       </div>
     </div>
   );

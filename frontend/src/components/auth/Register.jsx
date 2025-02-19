@@ -5,6 +5,7 @@ import SpotlightCard from '../ui/Spotlight'
 import {useNavigate} from 'react-router-dom'
 import { useState } from 'react'
 import axios from 'axios'
+import useSmallScreen from '../ui/SmallScreen'
 
 function Register() {
     const [email, setEmail] = useState('');
@@ -16,6 +17,7 @@ function Register() {
     const navigate = useNavigate();
     const [password, setPassword] = useState('');
     const [errorPassword, setErrorPassword] = useState('');
+    const isSmallScreen = useSmallScreen()
     const baseUrl = import.meta.env.VITE_BACKEND_URL
 
     const cleanedFName = fName.trim().replace(/\s+/g, ' ').toLowerCase().replace(/^./, (str) => str.toUpperCase());
@@ -49,7 +51,7 @@ function Register() {
   return (
     <div className='h-screen w-screen flex items-center justify-around bg-red-950'>
         <div className='bg-black h-screen w-screen absolute bg-opacity-70'></div>
-        <div>
+        {!isSmallScreen && (<div>
             <MagnetLines
                 rows={10}
                 columns={9}
@@ -60,7 +62,7 @@ function Register() {
                 baseAngle={0}
                 style={{ margin: "2rem auto" }}
             />
-        </div>
+        </div>)}
         <div className='relative flex flex-col items-end justify-around h-screen'>
             <div className='flex flex-col items-center '>
               <img src="/register.png" alt="" className='h-32 relative -top-4 z-10' />
@@ -70,7 +72,7 @@ function Register() {
                   className="border border-white px-20 pt-12 rounded-lg flex flex-col gap-6" 
                   spotlightColor="rgba(255, 0, 0, 0.2)"
                 >
-                  <div className='flex gap-4'>
+                  <div className='flex sm:flex-row flex-col gap-4'>
                     <input 
                       type="text" 
                       placeholder='First Name' 
@@ -100,7 +102,7 @@ function Register() {
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)} 
                   />
-                  <div className='flex gap-4'>
+                  <div className='flex flex-col sm:flex-row gap-4'>
                     <input 
                       type="text" 
                       placeholder='Pin Code' 

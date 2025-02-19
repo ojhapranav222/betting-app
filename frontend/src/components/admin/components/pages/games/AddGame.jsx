@@ -51,7 +51,7 @@ export default function AddGame() {
         {/* Sidebar */}
         <Sidebar />
         {/* Main Content */}
-        <div className="flex-1 ml-64">
+        <div className="flex-1 sm:ml-64">
           <main className="p-6">
       <h1 className="text-2xl font-bold mb-4">Add New Game</h1>
       <form onSubmit={handleSubmit} className="max-w-md bg-white p-6 rounded shadow">

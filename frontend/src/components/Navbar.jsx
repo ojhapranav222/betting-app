@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IoWalletOutline } from "react-icons/io5";
 import axios from 'axios';
+import useSmallScreen from './ui/SmallScreen';
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -9,6 +10,7 @@ function Navbar() {
   const [dropWallet, setDropWallet] = useState(false);
   const [admin, setIsAdmin] = useState(false)
   const [user, setUser] = useState({})
+  const isSmallScreen = useSmallScreen();
 
   function toggleDropDown() {
     setDropVisible(!dropVisible);
@@ -62,9 +64,9 @@ function Navbar() {
     <div className="w-full bg-opacity-10 bg-black rounded-lg backdrop-blur-md h-[80px] flex sm:justify-between justify-around items-center sm:px-10 fixed top-0 z-[99]">
       <h1 className="uppercase font-bold cursor-pointer text-white tracking-wider text-3xl" onClick={() => setIsLoggedIn((prev) => !prev)}>Nxt</h1>
       {isLoggedIn ? (
-        <div className='flex gap-12 items-center'>
-            {admin && (<Link to='/admin/dashboard' className='text-xl font-semibold text-white cursor-pointer px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Admin</Link>)}
-          <Link to='/games' className='text-xl font-semibold text-white cursor-pointer px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Bet Now</Link>
+        <div className='flex sm:gap-12 gap-8 items-center'>
+            {admin && (<Link to='/admin/dashboard' className='text-xl font-semibold text-white cursor-pointer sm:px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Admin</Link>)}
+          {!isSmallScreen && <Link to='/games' className='sm:text-xl text-sm font-semibold text-white cursor-pointer sm:px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Bet Now</Link>}
           <div className="relative">
             <div className="text-white text-3xl cursor-pointer" onClick={toggleDrowWallet}>
               <IoWalletOutline />
@@ -96,9 +98,9 @@ function Navbar() {
           )}
         </div>
       ) : (
-        <div className='text-white flex justify-between w-[20%]'>
-          <Link to='/login' className='text-xl font-semibold border border-white px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Login</Link>
-          <Link to='/register' className='text-xl font-semibold border border-white px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Register</Link>
+        <div className='text-white flex justify-between w-[50%] sm:w-[20%]'>
+          <Link to='/login' className='sm:text-xl font-semibold border border-white px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300 text-sm'>Login</Link>
+          <Link to='/register' className='sm:text-xl font-semibold border border-white px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300 text-sm'>Register</Link>
         </div>
       )}
     </div>

@@ -12,6 +12,8 @@ import {
   } from "lucide-react";
 import { BsBank2 } from "react-icons/bs";
 import { MdOutlineSportsCricket } from "react-icons/md";
+import {RxHamburgerMenu} from "react-icons/rx"
+import useSmallScreen from '../../../ui/SmallScreen';
 
 function Sidebar() {
     const activeClass = "w-full justify-start gap-2 hover:text-gray-600 hover:bg-white bg-[#e0382a] text-white";
@@ -26,13 +28,26 @@ function Sidebar() {
     const [wallet, setWallet] = useState(false)
     const [withdrawals, setWithdrawals] = useState(false)
     const [activeBank, setActiveBank] = useState(false)
+    const isSmallScreen = useSmallScreen();
+    const [isOpen, setIsOpen] = useState(false);
   return (
-    <div
-          className="bg-opacity-0 w-64 border-r px-3 py-4 fixed flex flex-col justify-between h-[calc(100vh-4rem)]"
-          style={{ backgroundColor: "#f3f4f6" }}
+    <>
+    {/* Hamburger Icon */}
+    {isSmallScreen && (
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="fixed top-4 left-4 z-50 p-2 bg-white shadow-lg rounded-full"
         >
+          <RxHamburgerMenu size={24} />
+        </button>
+      )}
+      <div
+        className={`sm:bg-opacity-0 bg-white z-50 w-64 border-r px-3 py-4 fixed flex flex-col justify-between h-[calc(100vh-4rem)]
+          ${isSmallScreen ? (isOpen ? "translate-x-0" : "-translate-x-full") : "translate-x-0"} transition-all ease-in-out`}
+        style={{ backgroundColor: "#f3f4f6" }}
+      >
           <div className="space-y-1 bg flex flex-col">
-            <NavLink to="/admin/dashboard" className={({isActive}) =>
+            {!isSmallScreen && (<NavLink to="/admin/dashboard" className={({isActive}) =>
                 {if (isActive) setActiveDashboard(true);}}>
                 <Button
                 variant="secondary"
@@ -41,7 +56,7 @@ function Sidebar() {
                 <Home className="h-4 w-4" />
                 Dashboard
                 </Button>
-            </NavLink>
+            </NavLink>)}
             <NavLink to="/admin/users" className={({isActive}) => {if (isActive) setActiveUsers(true);}}>
                 <Button
                 variant="secondary"
@@ -96,7 +111,7 @@ function Sidebar() {
                 Accounts
                 </Button>
             </NavLink>
-            <NavLink to="/admin/helpdesk" className={({isActive}) => {if (isActive) setActiveDisputes(true);}}>
+            {!isSmallScreen && (<NavLink to="/admin/helpdesk" className={({isActive}) => {if (isActive) setActiveDisputes(true);}}>
                 <Button
                 variant="secondary"
                 className={activeDisputes ? activeClass : inactiveClass}
@@ -104,28 +119,10 @@ function Sidebar() {
                 <Users2 className="h-4 w-4" />
                 User Help
                 </Button>
-            </NavLink>
-          </div>
-          <div className="mt-20 space-y-1">
-            <div className="px-3 text-xs font-medium text-gray-500 ">
-              Settings
-            </div>
-            <Button
-              variant="ghost"
-              className={inactiveClass}
-            >
-              <Settings className="h-4 w-4" />
-              Settings
-            </Button>
-            <Button
-              variant="ghost"
-              className={inactiveClass}
-            >
-              <Settings2 className="h-4 w-4" />
-              Global Settings
-            </Button>
+            </NavLink>)}
           </div>
         </div>
+    </>
   )
 }
 

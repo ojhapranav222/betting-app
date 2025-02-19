@@ -26,14 +26,14 @@ function Events() {
   }, []);
 
   return (
-    <div className="mt-24 w-[50%] h-screen overflow-y-scroll overflow-x-hidden">
+    <div className="mt-24 sm:w-[50%] sm:p-0 px-10 h-screen overflow-y-scroll overflow-x-hidden">
       <h1 className="text-white text-center mb-8 font-bold text-3xl">
         Upcoming & Live Matches
       </h1>
       <div className="flex flex-col gap-4 pb-36">
         {events ? (
           events.games?.map((event, index) => (
-            <div key={event.id || index} className={event.bet ? '' : 'cursor-not-allowed opacity-50'}>
+            <div key={event.id || index} className={event.bet ? '' : 'hidden'}>
               <Card
                 country1={event.team_a}
                 country2={event.team_b}

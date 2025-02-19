@@ -111,19 +111,19 @@ function Accounts() {
     
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen sm:w-auto w-screen overflow-x-hidden bg-gray-100">
         {/* Header Section */}
       <Header />
       <div className="flex flex-row items-start justify-between mt-16">
         {/* Sidebar */}
         <Sidebar />
         {/* Main */}
-        <div className='flex-1 ml-64'>
+        <div className='flex-1 sm:ml-64'>
             <main className="p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <h1 className="text-2xl font-semibold">Deposit History</h1>
-                    <div className='flex gap-6'>
+                    <div className='flex sm:gap-6'>
                     <Link to="/admin/banks/add">
                         <Button
                             variant="secondary"
@@ -142,7 +142,7 @@ function Accounts() {
                     </div>
                 </div>
                 {/* Table */}
-                <div className="w-full mt-6">
+                <div className="w-screen sm:w-full mt-6">
                     <Card className="border-none">
                         <CardHeader>
                             <div className="header flex justify-between">
@@ -173,7 +173,7 @@ function Accounts() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <Table>
+                            <Table className='w-screen sm:w-[100%] overflow-x-scroll'>
                                 <TableHeader className='border-b-2'>
                                 <TableRow>
                                     <TableHead>

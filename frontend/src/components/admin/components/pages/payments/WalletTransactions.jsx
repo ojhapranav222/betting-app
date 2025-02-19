@@ -94,14 +94,14 @@ function WalletTransactions() {
     }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-100 w-screen overflow-hidden">
         {/* Header Section */}
       <Header />
       <div className="flex flex-row items-start justify-between mt-16">
         {/* Sidebar */}
         <Sidebar />
         {/* Main */}
-        <div className='flex-1 ml-64'>
+        <div className='flex-1 sm:ml-64'>
             <main className="p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between">
@@ -116,7 +116,7 @@ function WalletTransactions() {
                     </div>
                 </div>
                 {/* Table */}
-                <div className="w-full mt-6">
+                <div className="w-screen sm:w-full mt-6">
                     <Card className="border-none">
                         <CardHeader>
                             <div className="header flex justify-between">
@@ -147,7 +147,7 @@ function WalletTransactions() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <Table>
+                            <Table className='w-screen overflow-x-scroll sm:w-auto'>
                                 <TableHeader className='border-b-2'>
                                 <TableRow>
                                     <TableHead>

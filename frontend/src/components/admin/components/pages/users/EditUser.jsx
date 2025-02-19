@@ -142,7 +142,7 @@ const EditUser = () => {
         <div className="flex flex-row items-start justify-between mt-16">
             {/* Sidebar */}
             <Sidebar />
-            <div className="flex-1 ml-64">
+            <div className="flex-1 sm:ml-64">
                 {/* User Content */}
                 <main className="p-6">
                     <div className="flex items-center justify-between text-sm">
@@ -173,7 +173,7 @@ const EditUser = () => {
                             </Button>
                         </div>
                     </div>
-                    <div className="w-full mt-6 pb-6 flex flex-row gap-4">
+                    <div className="w-full mt-6 pb-6 flex flex-col sm:flex-row gap-4">
                         <div className='flex flex-col gap-4 basis-2/3'>
                             <Card>
                                 <CardContent>
@@ -207,7 +207,7 @@ const EditUser = () => {
                             </Card>
                             <Card>
                             <CardContent>
-                                <CardHeader className='font-bold'>Deposit History</CardHeader>
+                                <CardHeader className='font-bold h-20 overflow-scroll'>Deposit History</CardHeader>
                                     <Table>
                                         <TableHeader className='border-b-2'>
                                         <TableRow>

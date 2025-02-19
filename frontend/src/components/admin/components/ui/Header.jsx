@@ -11,10 +11,10 @@ import { Link } from 'react-router-dom';
 function Header({className}) {
   return (
     <header className={`border-b shadow-sm bg-white ${className}`}>
-            <div className="w-full px-10 h-16 flex items-center justify-between fixed bg-gray-100 z-10">
+            <div className="w-screen sm:w-full px-10 h-16 flex items-center justify-between fixed bg-gray-100 z-10">
             {/* Logo */}
             <Link to="/">
-                <h1 className="text-4xl font-bold">
+                <h1 className="text-4xl font-bold sm:ml-0 ml-12">
                     NXT
                 </h1>
             </Link>
