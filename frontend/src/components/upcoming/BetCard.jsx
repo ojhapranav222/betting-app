@@ -49,7 +49,7 @@ function BetCard() {
 
       {/* Sliding Bet Card */}
       <div
-        className={`fixed sm:static top-0 right-0 sm:w-full mt-36 bg-gray-900 p-4 rounded-xl overflow-y-scroll transform transition-transform ${
+        className={`fixed sm:static top-0 right-0 sm:w-full mt-36 border-2 border-black bg-gray-300 p-4 rounded-xl overflow-y-scroll transform transition-transform ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         style={{ zIndex: 999 }}

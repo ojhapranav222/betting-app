@@ -5,7 +5,7 @@ import BetCard from './upcoming/BetCard'
 
 function UpcomingGames() {
   return (
-    <div className='bg-black relative w-full h-screen overflow-hidden'>
+    <div className='relative w-full h-screen overflow-hidden'>
         <Navbar2 />
         <div className='flex justify-around items-start h-screen overflow-y-scroll'>
             <Events />

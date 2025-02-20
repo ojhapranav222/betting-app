@@ -65,9 +65,10 @@ function Card({ country1, country2, endTime, type, onBetClick, bet }) {
 
   return (
     <SpotlightCard
-      className={`border border-gray-400 bg-gray-950 transition ${
+      className={`border-2 border-black transition bg-custom-gradient ${
         !betActive ? "opacity-50 cursor-not-allowed" : ""
-      }`}
+      }`
+    }
     >
       <div className="text-white">
         <div className="flex justify-between">
@@ -75,7 +76,7 @@ function Card({ country1, country2, endTime, type, onBetClick, bet }) {
             {type}
           </h2>
         </div>
-        <p className="flex justify-between text-xl mt-4">
+        <p className="flex justify-between text-xl mt-4 text-gray-900">
           <span className="font-semibold">{country1}</span> <span>vs</span>
           <span className="font-semibold">{country2}</span>
         </p>
@@ -107,7 +108,7 @@ function Card({ country1, country2, endTime, type, onBetClick, bet }) {
         {betActive ? (
           <button
             onClick={onBetClick}
-            className="mt-4 w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700"
+            className="mt-4 w-full bg-gray-900 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition-all ease-in-out"
           >
             Bet Now
           </button>
