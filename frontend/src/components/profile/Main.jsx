@@ -25,12 +25,11 @@ function Main() {
     const registration_date = date ? date.split("T")[0] : null;
 
   return (
-    <div className="relative w-full h-screen overflow-hidden" style={{background: 'linear-gradient(135deg, #0D47A1, #1565C0, #2196F3, #43A047)'}}>
-        <div className='bg-black absolute h-screen w-screen opacity-20'></div>
+    <div className="relative w-full h-screen overflow-hidden">
         <Navbar2 />
         <div className='relative sm:pl-36 px-10 z-10  pt-12 flex items-center h-screen'>
             {!isSmallScreen && <Sidebar />}
-            <main className='flex justify-center w-full flex-col items-center sm:px-20 text-white'>
+            <main className='flex justify-center w-full flex-col items-center sm:px-20 text-black'>
                 <h1 className='text-xl font-bold p-4 border-b border-b-white w-[80%] text-center'>
                     Personal Information
                 </h1>

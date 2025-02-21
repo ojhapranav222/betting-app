@@ -31,25 +31,24 @@ function Events() {
         Upcoming & Live Matches
       </h1>
       <div className="flex flex-col gap-4 pb-24">
-        {events ? (
-          events.games?.map((event, index) => (
-            <div key={event.id || index} className={event.bet ? '' : 'hidden'}>
-              <Card
-                country1={event.team_a}
-                country2={event.team_b}
-                endTime={event.end_time}
-                type={event.match_name}
-                bet={event.bet}
-                onBetClick={() => openModal(event)}
-              />
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-400 text-center mt-6">
-            No upcoming or live games at this moment
-          </p>
-        )}
-      </div>
+  {events?.games?.filter(event => event.bet && new Date(event.end_time) > new Date()).length > 0 ? (
+    events.games
+      .filter(event => event.bet && new Date(event.end_time) > new Date())
+      .map((event, index) => (
+        <Card
+          key={event.id || index}
+          country1={event.team_a}
+          country2={event.team_b}
+          endTime={event.end_time}
+          type={event.match_name}
+          bet={event.bet}
+          onBetClick={() => openModal(event)}
+        />
+      ))
+  ) : (
+    <p className="text-center text-gray-500 text-lg">No game coming up...</p>
+  )}
+</div>
 
       {isModalOpen && selectedEvent && (
         <QuickBetModal

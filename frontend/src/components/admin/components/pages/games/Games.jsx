@@ -219,66 +219,6 @@ async function handleSave(event, gameId) {
               </div>
             </div>
 
-            {/* Stats Cards */}
-            {!isSmallScreen && (<div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card className="h-[150px] rounded-tl-lg rounded-bl-lg rounded-tr-none rounded-br-none border-none relative overflow-hidden">
-                <div className="h-full w-[1.3px] bg-gray-100 absolute right-0 top-0"></div>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 relative">
-                  <CardTitle className="text-2xl font-semibold">
-                    3
-                  </CardTitle>
-                  <CardIcon />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-sem font-semibold text-gray-500 pb-2">
-                    Total Games
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="rounded-none border-none relative">
-                <div className="h-full w-[1.3px] bg-gray-100 absolute right-0 top-0"></div>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 relative">
-                  <CardTitle className="text-2xl font-semibold">
-                    1
-                  </CardTitle>
-                  <CardIcon />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-sm font-semibold text-gray-500 pb-2">
-                    Live Games
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="rounded-none border-none relative">
-                <div className="h-full w-[1.3px] bg-gray-100 absolute right-0 top-0"></div>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 relative">
-                  <CardTitle className="text-2xl font-semibold">
-                    2
-                  </CardTitle>
-                  <CardIcon />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-sm font-semibold text-gray-500 pb-2">
-                    Scheduled Games
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="rounded-tl-none rounded-bl-none rounded-tr-lg rounded-br-lg relative border-none">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 relative">
-                  <CardTitle className="text-2xl font-semibold">
-                    {/* You can add another stat here */}
-                    -
-                  </CardTitle>
-                  <CardIcon />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-sm font-semibold text-gray-500 pb-2">
-                    Other Stats
-                  </div>
-                </CardContent>
-              </Card>
-            </div>)}
-
             {/* Games Table */}
             <div className="w-screen sm:w-[100%] mt-6 overflow-hidden sm:overflow-auto">
               <Card className="border-none">
@@ -297,7 +237,7 @@ async function handleSave(event, gameId) {
                   </div>
                 </CardHeader>
                 <CardContent>
-                <Table className="w-[100%] overflow-x-scroll">
+                <Table className="w-[100%] max-w-[100%] sm:table-fixed overflow-x-scroll">
   <TableHeader className="border-b-2">
     <TableRow>
       <TableHead>#</TableHead>
@@ -325,7 +265,7 @@ async function handleSave(event, gameId) {
                   value={editedValues.team_a}
                   onChange={(e) => handleChange("team_a", e.target.value)}
                   onKeyDown={(e) => handleSave(e, game.id)}
-                  className="bg-gray-200 px-2 py-1 rounded"
+                  className="bg-gray-200 px-2 py-1 rounded sm:w-24"
                 />
               </TableCell>
               <TableCell>
@@ -334,7 +274,7 @@ async function handleSave(event, gameId) {
                   value={editedValues.team_b}
                   onChange={(e) => handleChange("team_b", e.target.value)}
                   onKeyDown={(e) => handleSave(e, game.id)}
-                  className="bg-gray-200 px-2 py-1 rounded"
+                  className="bg-gray-200 px-2 py-1 rounded sm:w-24"
                 />
               </TableCell>
               <TableCell>
@@ -343,7 +283,7 @@ async function handleSave(event, gameId) {
                   value={editedValues.match_name}
                   onChange={(e) => handleChange("match_name", e.target.value)}
                   onKeyDown={(e) => handleSave(e, game.id)}
-                  className="bg-gray-200 px-2 py-1 rounded"
+                  className="bg-gray-200 px-2 py-1 rounded sm:w-24"
                 />
               </TableCell>
               <TableCell>
@@ -352,7 +292,7 @@ async function handleSave(event, gameId) {
                   value={editedValues.end_time}
                   onChange={(e) => handleChange("end_time", e.target.value)}
                   onKeyDown={(e) => handleSave(e, game.id)}
-                  className="bg-gray-200 px-2 py-1 rounded"
+                  className="bg-gray-200 px-2 py-1 rounded sm:w-24"
                 />
               </TableCell>
               <TableCell>
@@ -361,7 +301,7 @@ async function handleSave(event, gameId) {
                   value={editedValues.additional_notes}
                   onChange={(e) => handleChange("additional_notes", e.target.value)}
                   onKeyDown={(e) => handleSave(e, game.id)}
-                  className="bg-gray-200 px-2 py-1 rounded"
+                  className="bg-gray-200 px-2 py-1 rounded sm:w-24"
                 />
               </TableCell>
             </>

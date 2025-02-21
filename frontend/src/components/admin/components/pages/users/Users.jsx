@@ -152,133 +152,8 @@ export default function User() {
                         </Button>
                         </div>
 
-                    {/* Stats */}
-                    {!isSmallScreen && (<div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-4">
-                        <Card className="h-[150px] rounded-tl-lg rounded-bl-lg rounded-tr-none rounded-br-none border-none relative overflow-hidden">
-                            <div className="h-full w-[1.3px] bg-gray-100 absolute right-0 top-0"></div>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 relative">
-                            <CardTitle className="text-2xl font-semibold">
-                                {userData.totalNumber}
-                            </CardTitle>
-                            <CardIcon /> {/* Reusable icon component */}
-                            </CardHeader>
-                            <CardContent>
-                            <div className="text-sem font-semibold text-gray-500 pb-2">
-                                Total Users
-                            </div>
-                            <div className="flex items-center   gap-4">
-                                <span className="text-green-600 text-md">22.45%</span>
-                                <svg
-                                class="h-5 w-5 text-green-600 "
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                >
-                                <path
-                                    d="M5 15l7-7 7 7"
-                                    stroke-width="3"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                />
-                                </svg>
-                            </div>
-                            </CardContent>
-                        </Card>
-                        <Card className="rounded-none border-none relative">
-                            <div className="h-full w-[1.3px] bg-gray-100 absolute right-0 top-0"></div>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 relative">
-                            <CardTitle className="text-2xl font-semibold">
-                                {userData.totalNumberActive}
-                            </CardTitle>
-                            <CardIcon /> {/* Reusable icon component */}
-                            </CardHeader>
-                            <CardContent>
-                            <div className="text-sm font-semibold text-gray-500 pb-2">
-                                Active Users
-                            </div>
-                            <div className="flex items-center text-md text-green-600 gap-4">
-                                <span>15.34%</span>
-                                <svg
-                                class="h-5 w-5 text-green-600"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                >
-                                <path
-                                    d="M5 15l7-7 7 7"
-                                    stroke-width="3"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                />
-                                </svg>
-                            </div>
-                            </CardContent>
-                        </Card>
-
-                        <Card className="rounded-none border-none relative">
-                            <div className="h-full w-[1.3px] bg-gray-100 absolute right-0 top-0"></div>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 relative">
-                            <CardTitle className="text-2xl font-semibold">
-                                {userData.totalNumberInactive}
-                            </CardTitle>
-                            <CardIcon /> {/* Reusable icon component */}
-                            </CardHeader>
-                            <CardContent>
-                            <div className="text-sm font-semibold text-gray-500 pb-2">
-                                Inactive Users
-                            </div>
-                            <div className="flex items-center text-md text-red-600 gap-4">
-                                <span>18.25%</span>
-                                <svg
-                                class="h-5 w-5 text-red-600"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                >
-                                <path
-                                    d="M19 9l-7 7-7-7"
-                                    stroke-width="3"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                />
-                                </svg>
-                            </div>
-                            </CardContent>
-                        </Card>
-
-                        <Card className="rounded-tl-none rounded-bl-none rounded-tr-lg rounded-br-lg relative border-none">
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 relative">
-                            <CardTitle className="text-2xl font-semibold">
-                                {userData.totalNumberSuspended}
-                            </CardTitle>
-                            <CardIcon /> {/* Reusable icon component */}
-                            </CardHeader>
-                            <CardContent>
-                            <div className="text-sm font-semibold text-gray-500 pb-2">
-                                Suspended Users
-                            </div>
-                            <div className="flex items-center text-md text-green-600 gap-4">
-                                <span>10.24%</span>
-                                <svg
-                                class="h-5 w-5 text-green-600"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                >
-                                <path
-                                    d="M5 15l7-7 7 7"
-                                    stroke-width="3"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                />
-                                </svg>
-                            </div>
-                            </CardContent>
-                        </Card>
-                    </div>)}
-
                     {/* Table */}
-                    <div className="w-screen sm:w-[80%] mt-6 overflow-hidden sm:overflow-auto">
+                    <div className="w-screen sm:w-[100%] mt-6 overflow-hidden sm:overflow-auto">
                         <Card className="border-none">
                             <CardHeader>
                                 <div className="header flex justify-between">
@@ -309,7 +184,7 @@ export default function User() {
                                 </div>
                             </CardHeader>
                             <CardContent>
-                                <Table className = 'w-screen overflow-x-scroll'>
+                                <Table className = 'w-[100%] overflow-x-scroll'>
                                     <TableHeader className='border-b-2'>
                                     <TableRow>
                                         <TableHead>

@@ -169,7 +169,7 @@ function Withdrawal() {
       };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 w-screen sm:w-auto overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-gray-100 overflow-hidden">
         {/* Header Section */}
       <Header />
       <div className="flex flex-row items-start justify-between mt-16">
@@ -181,7 +181,7 @@ function Withdrawal() {
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <h1 className="text-2xl font-semibold">Withdrawal History</h1>
-                    <div className='flex gap-6'>
+                    <div className='flex mr-6'>
                         <Button
                             variant="secondary"
                             className="w-auto bg-[white] text-[#e0382a] border-2"
@@ -191,7 +191,7 @@ function Withdrawal() {
                     </div>
                 </div>
                 {/* Table */}
-                <div className="w-screen mt-6 overflow-x-scroll">
+                <div className="w-screen sm:w-[100%] mt-6 overflow-hidden sm:overflow-auto">
                     <Card className="border-none">
                         <CardHeader>
                             <div className="header flex justify-between">
@@ -222,7 +222,7 @@ function Withdrawal() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <Table className='w-screen sm:w-[50%] overflow-x-scroll'>
+                            <Table className='w-[100%] overflow-x-scroll'>
                                 <TableHeader className='border-b-2'>
                                 <TableRow>
                                     <TableHead>

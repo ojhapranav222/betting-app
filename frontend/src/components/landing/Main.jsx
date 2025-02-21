@@ -22,13 +22,14 @@ function Main() {
           <h1 className="text-6xl sm:text-7xl font-extrabold leading-tight">
             The Ultimate{" "}
             <GradientText
-              colors={["#2E7D32", "#1B5E20", "#388E3C"]}
-              animationSpeed={2}
-              showBorder={false}
-              className="uppercase px-4 py-1 font-bold"
-            >
-              Cricket Betting Arena
-            </GradientText>
+  colors={["#0033A0", "#0047AB", "#0085CA"]}
+  animationSpeed={2}
+  showBorder={false}
+  className="uppercase pr-4 py-1 font-bold"
+>
+  Cricket Betting Arena
+</GradientText>
+
           </h1>
           <p className="text-xl font-medium text-gray-700 max-w-xl">
             Bet on your favorite teams, predict match outcomes, and win big. Experience cricket like never before!

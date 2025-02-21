@@ -101,15 +101,6 @@ function Sidebar() {
                 Accounts
                 </Button>
             </NavLink>
-            {!isSmallScreen && (<NavLink to="/admin/helpdesk" className={({isActive}) => {if (isActive) setActiveDisputes(true);}}>
-                <Button
-                variant="secondary"
-                className={activeDisputes ? activeClass : inactiveClass}
-                >
-                <Users2 className="h-4 w-4" />
-                User Help
-                </Button>
-            </NavLink>)}
           </div>
         </div>
     </>

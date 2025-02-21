@@ -147,7 +147,7 @@ function WalletTransactions() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <Table className='w-screen overflow-x-scroll sm:w-auto'>
+                            <Table className='w-[100%] overflow-x-scroll'>
                                 <TableHeader className='border-b-2'>
                                 <TableRow>
                                     <TableHead>
