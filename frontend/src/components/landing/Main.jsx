@@ -1,60 +1,63 @@
 import React from "react";
 import Navbar from "../Navbar";
-import Waves from "../ui/WaveLines";
 import GradientText from "../ui/GradientText";
 import { Link } from "react-router-dom";
 import useSmallScreen from "../ui/SmallScreen";
 
 function Main() {
-    const isSmallScreen = useSmallScreen();
+  const isSmallScreen = useSmallScreen();
 
   return (
-    <div className="relative w-full h-screen overflow-hidden" style={{background: 'linear-gradient(135deg, #0D47A1, #1565C0, #2196F3, #43A047)'}}>
-        <Navbar />
-      {/* div overlay */}
-      <div className="w-full h-screen absolute opacity-30">
-      <Waves
-        lineColor="#fff"
-        backgroundColor="rgba(255, 255, 255, 0.2)"
-        waveSpeedX={0.02}
-        waveSpeedY={0.01}
-        waveAmpX={40}
-        waveAmpY={20}
-        friction={0.9}
-        tension={0.01}
-        maxCursorMove={120}
-        xGap={12}
-        yGap={36}
-        />
-      </div>
+    <div
+      className="relative w-full h-screen overflow-hidden flex flex-col"
+      style={{
+        background: "linear-gradient(135deg, #E8F5E9, #D0F0C0, #B3E5FC)",
+      }}
+    >
+      <Navbar />
 
-      {/* Content over the video */}
-      <div className="w-full h-screen flex justify-around items-center relative">
-        <div className="relative z-10 flex flex-col items-center justify-center gap-4 h-full text-white text-center sm:text-left">
-            <h1 className="text-6xl font-bold gap-2">Welcome to the Ultimate
+      {/* Content */}
+      <div className="w-full h-full flex justify-center items-center px-6 text-gray-900">
+        <div className="relative z-10 flex flex-col items-center sm:items-start text-center sm:text-left gap-6">
+          <h1 className="text-6xl sm:text-7xl font-extrabold leading-tight">
+            The Ultimate{" "}
             <GradientText
-            colors={["#40ffaa", "#FFC107", "#FFEB3B", "#FF5722", "#FDD835"]}
-            animationSpeed={3}
-            showBorder={false}
-            className="uppercase px-6 py-1 font-bold"
+              colors={["#2E7D32", "#1B5E20", "#388E3C"]}
+              animationSpeed={2}
+              showBorder={false}
+              className="uppercase px-4 py-1 font-bold"
             >
-            Cricket Experience
+              Cricket Betting Arena
             </GradientText>
-            </h1>
-            <p className="font-semibold text-xl text-center px-10 sm:px-0">Join thousands of players and experience the thrill of our premium <br /> features with incredible bonuses.</p>
-            <div className="flex gap-4 mt-4">
-              <Link to="/games">
-                <button className="text-xl bg-transparent hover:bg-white hover:text-black border border-white rounded-full px-6 py-2 text-white transition-all duration-300">Bet Now</button>
-              </Link>
-              <Link to="/games">
-                <button className="text-xl bg-white hover:bg-transparent hover:text-white border border-white rounded-full px-6 py-2 text-black transition-all duration-300">View Live Matches</button>
-              </Link>
-            </div>
+          </h1>
+          <p className="text-xl font-medium text-gray-700 max-w-xl">
+            Bet on your favorite teams, predict match outcomes, and win big. Experience cricket like never before!
+          </p>
+          <div className="flex gap-6 mt-4">
+            <Link to="/games">
+              <button className="text-xl bg-green-600 hover:bg-green-500 border border-green-500 rounded-full px-8 py-3 text-white transition-all duration-300 shadow-md">
+                Start Betting
+              </button>
+            </Link>
+            <Link to="/games">
+              <button className="text-xl bg-yellow-400 hover:bg-yellow-300 border border-yellow-500 rounded-full px-8 py-3 text-black transition-all duration-300 shadow-md">
+                View Live Matches
+              </button>
+            </Link>
+          </div>
         </div>
-        {!isSmallScreen && <img src="/cricket.png" alt="" className="w-[30rem]" />}
+
+        {/* Cricket Visual */}
+        {!isSmallScreen && (
+          <img
+            src="/cricket.png"
+            alt="Cricket Stadium"
+            className="w-[35rem] drop-shadow-lg"
+          />
+        )}
       </div>
     </div>
   );
-};
+}
 
 export default Main;

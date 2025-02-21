@@ -26,11 +26,11 @@ function Events() {
   }, []);
 
   return (
-    <div className="mt-24 sm:w-[50%] sm:p-0 px-10 h-screen overflow-y-scroll overflow-x-hidden">
-      <h1 className="text-white text-center mb-8 font-bold text-3xl">
+    <div className="mt-24 w-full sm:w-[40%] px-6 sm:px-8 h-screen overflow-y-auto">
+      <h1 className="text-gray-400 text-left mb-6 font-bold text-2xl sm:text-3xl border-b pb-3 border-gray-700">
         Upcoming & Live Matches
       </h1>
-      <div className="flex flex-col gap-4 pb-36">
+      <div className="flex flex-col gap-4 pb-24">
         {events ? (
           events.games?.map((event, index) => (
             <div key={event.id || index} className={event.bet ? '' : 'hidden'}>
@@ -40,12 +40,12 @@ function Events() {
                 endTime={event.end_time}
                 type={event.match_name}
                 bet={event.bet}
-                onBetClick={() => openModal(event)} // Pass only the button handler
+                onBetClick={() => openModal(event)}
               />
             </div>
           ))
         ) : (
-          <p className="text-white text-center">
+          <p className="text-gray-400 text-center mt-6">
             No upcoming or live games at this moment
           </p>
         )}
@@ -55,7 +55,7 @@ function Events() {
         <QuickBetModal
           event={selectedEvent}
           onClose={() => {
-            setIsModalOpen(false);
+            setIsModalOpen(false)
             setSelectedEvent(null);
           }}
         />

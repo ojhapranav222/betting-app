@@ -62,7 +62,7 @@ function Navbar2() {
       <Link to='/' className="uppercase font-bold cursor-pointer text-black tracking-wider text-3xl mr-12">Nxt</Link>
       {isLoggedIn ? (
         <div className='flex gap-12 items-center'>
-            {admin && (<Link to='/admin/dashboard' className='text-xl font-semibold text-black cursor-pointer px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Admin</Link>)}
+            {admin && (<Link to='/admin/users' className='text-xl font-semibold text-black cursor-pointer px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Admin</Link>)}
           <Link to='/games' className='text-xl font-semibold text-black cursor-pointer px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Bet Now</Link>
           <div className="relative">
             <div className="text-black text-3xl cursor-pointer" onClick={toggleDrowWallet}>

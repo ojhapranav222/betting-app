@@ -94,7 +94,7 @@ function WalletTransactions() {
     }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 w-screen overflow-hidden">
+    <div className="flex flex-col min-h-screen bg-gray-100 w-screen sm:w-auto overflow-hidden">
         {/* Header Section */}
       <Header />
       <div className="flex flex-row items-start justify-between mt-16">

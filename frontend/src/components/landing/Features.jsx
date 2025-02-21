@@ -1,5 +1,4 @@
-import React from 'react'
-import GradientText from '../ui/GradientText'
+import React from "react";
 import { AiOutlineThunderbolt } from "react-icons/ai";
 import { CiMobile1 } from "react-icons/ci";
 import { VscGraph } from "react-icons/vsc";
@@ -7,41 +6,56 @@ import { IoShieldCheckmarkOutline } from "react-icons/io5";
 
 function Features() {
   return (
-    <div className='bg-black'>
-        <h1 className="text-5xl font-bold gap-2 text-white text-center mt-16">Why
-            <GradientText
-            colors={["#40ffaa", "#FFC107", "#FFEB3B", "#FF5722", "#FDD835"]}
-            animationSpeed={3}
-            showBorder={false}
-            className="custom-class uppercase px-6 py-1 font-bold"
+    <div className="bg-white text-gray-900 py-16">
+      {/* Title */}
+      <h1 className="text-5xl font-extrabold text-center uppercase">
+        Why <span className="text-yellow-500 drop-shadow-md">NXT Gamer?</span>
+      </h1>
+
+      {/* Features Grid */}
+      <div className="grid sm:grid-cols-2 grid-cols-1 sm:grid-rows-2 grid-rows-4 mt-12 px-6 gap-8">
+        {[
+          {
+            icon: <AiOutlineThunderbolt />,
+            title: "Instant Payouts",
+            desc: "Withdraw your winnings instantly, no delays!",
+            bg: "bg-yellow-400",
+          },
+          {
+            icon: <VscGraph />,
+            title: "Best Odds",
+            desc: "Win BIG with the best betting odds available!",
+            bg: "bg-blue-400",
+          },
+          {
+            icon: <IoShieldCheckmarkOutline />,
+            title: "100% Secure",
+            desc: "Your funds and data are completely safe with us.",
+            bg: "bg-green-400",
+          },
+          {
+            icon: <CiMobile1 />,
+            title: "Mobile Betting",
+            desc: "Bet from anywhere, anytime with our mobile app!",
+            bg: "bg-red-400",
+          },
+        ].map((feature, index) => (
+          <div
+            key={index}
+            className="flex flex-col justify-center items-center gap-4 bg-gray-100 p-6 rounded-xl shadow-lg border-2 border-gray-300 hover:scale-105 transition-transform duration-300"
+          >
+            <div
+              className={`text-5xl h-20 w-20 flex justify-center items-center rounded-full text-white shadow-md ${feature.bg}`}
             >
-            NXT Gamer?
-            </GradientText>
-        </h1>
-        <div className='grid sm:grid-cols-2 grid-cols-1 sm:grid-rows-2 grid-rows-4 mt-4 py-6 gap-y-24 text-white sm:px-0 px-10'>
-            <div className='flex flex-col justify-center text-center items-center gap-4'>
-                <div className='text-5xl text-green-500 h-20 w-20 flex justify-center items-center rounded-full bg-green-500 bg-opacity-10'><AiOutlineThunderbolt /></div>
-                <h2 className='text-xl font-bold'>Instant Payouts</h2>
-                <p className='sm:text-sm text-gray-400'>Withdraw your winnings instantly to your preferred payment method</p>
+              {feature.icon}
             </div>
-            <div className='flex flex-col justify-center text-center items-center gap-4'>
-                <div className='text-5xl text-green-500 h-20 w-20 flex justify-center items-center rounded-full bg-green-500 bg-opacity-10'><VscGraph /></div>
-                <h2 className='text-xl font-bold'>Best Odds</h2>
-                <p className='sm:text-sm text-gray-400'>Get competitive odds across all cricket matches and tournaments</p>
-            </div>
-            <div className='flex flex-col justify-center text-center items-center gap-4'>
-                <div className='text-5xl text-green-500 h-20 w-20 flex justify-center items-center rounded-full bg-green-500 bg-opacity-10'><IoShieldCheckmarkOutline /></div>
-                <h2 className='text-xl font-bold'>Secure Platform</h2>
-                <p className='sm:text-sm text-gray-400'>Your funds and personal information are protected with advanced security</p>
-            </div>
-            <div className='flex flex-col justify-center text-center items-center gap-4'>
-                <div className='text-5xl text-green-500 h-20 w-20 flex justify-center items-center rounded-full bg-green-500 bg-opacity-10'><CiMobile1 /></div> 
-                <h2 className='text-xl font-bold'>Mobile Betting</h2>
-                <p className='sm:text-sm text-gray-400'>Bet on your favorite matches anytime, anywhere with our mobile platform</p>
-            </div>
-        </div>
+            <h2 className="text-2xl font-bold text-gray-800">{feature.title}</h2>
+            <p className="text-lg font-semibold text-gray-600">{feature.desc}</p>
+          </div>
+        ))}
+      </div>
     </div>
-  )
+  );
 }
 
-export default Features
+export default Features;

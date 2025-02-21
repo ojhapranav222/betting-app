@@ -47,16 +47,6 @@ function Sidebar() {
         style={{ backgroundColor: "#f3f4f6" }}
       >
           <div className="space-y-1 bg flex flex-col">
-            {!isSmallScreen && (<NavLink to="/admin/dashboard" className={({isActive}) =>
-                {if (isActive) setActiveDashboard(true);}}>
-                <Button
-                variant="secondary"
-                className={activeDashboard ? activeClass : inactiveClass}
-                >
-                <Home className="h-4 w-4" />
-                Dashboard
-                </Button>
-            </NavLink>)}
             <NavLink to="/admin/users" className={({isActive}) => {if (isActive) setActiveUsers(true);}}>
                 <Button
                 variant="secondary"

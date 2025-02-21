@@ -213,7 +213,7 @@ function Appointment() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <Table>
+                            <Table className='w-screen overflow-x-scroll sm:w-auto'>
                                 <TableHeader className='border-b-2'>
                                 <TableRow>
                                     <TableHead>

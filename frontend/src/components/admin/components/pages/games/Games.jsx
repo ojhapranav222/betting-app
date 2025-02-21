@@ -190,7 +190,7 @@ async function handleSave(event, gameId) {
 
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 w-screen overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-gray-100 overflow-hidden">
       <Header />
       <div className="flex flex-row items-start mt-16">
         {/* Sidebar */}
@@ -280,7 +280,7 @@ async function handleSave(event, gameId) {
             </div>)}
 
             {/* Games Table */}
-            <div className="w-screen mt-6">
+            <div className="w-screen sm:w-[100%] mt-6 overflow-hidden sm:overflow-auto">
               <Card className="border-none">
                 <CardHeader>
                   <div className="header flex justify-between">
@@ -297,7 +297,7 @@ async function handleSave(event, gameId) {
                   </div>
                 </CardHeader>
                 <CardContent>
-                <Table className="w-screen overflow-x-scroll sm:w-auto">
+                <Table className="w-[100%] overflow-x-scroll">
   <TableHeader className="border-b-2">
     <TableRow>
       <TableHead>#</TableHead>
