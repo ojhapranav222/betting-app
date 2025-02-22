@@ -1,147 +1,111 @@
-import React from 'react'
-import MagnetLines from '../ui/MagnetLines'
-import { Link } from 'react-router-dom'
-import SpotlightCard from '../ui/Spotlight'
-import {useNavigate} from 'react-router-dom'
-import { useState } from 'react'
-import axios from 'axios'
-import useSmallScreen from '../ui/SmallScreen'
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import useSmallScreen from '../ui/SmallScreen';
 
 function Register() {
-    const [email, setEmail] = useState('');
-    const [fName, setFName] = useState('');
-    const [lName, setLName] = useState('');
-    const [pinCode, setPincode] = useState('');
-    const [state, setState] = useState('')
-    const [phone, setPhone] = useState('');
-    const navigate = useNavigate();
-    const [password, setPassword] = useState('');
-    const [errorPassword, setErrorPassword] = useState('');
-    const isSmallScreen = useSmallScreen()
-    const baseUrl = import.meta.env.VITE_BACKEND_URL
+  const [email, setEmail] = useState('');
+  const [fName, setFName] = useState('');
+  const [lName, setLName] = useState('');
+  const [pinCode, setPincode] = useState('');
+  const [state, setState] = useState('');
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const baseUrl = import.meta.env.VITE_BACKEND_URL;
+  const isSmallScreen = useSmallScreen();
 
-    const cleanedFName = fName.trim().replace(/\s+/g, ' ').toLowerCase().replace(/^./, (str) => str.toUpperCase());
-    const cleanedLName = lName.trim().replace(/\s+/g, ' ').toLowerCase().replace(/^./, (str) => str.toUpperCase());
-    const fullName = `${cleanedFName} ${cleanedLName}`
+  const formData = {
+    email,
+    name: `${fName.trim()} ${lName.trim()}`,
+    phone,
+    pincode: pinCode,
+    state,
+    password,
+  };
 
-    const formData = {
-      email,
-      name: fullName,
-      phone,
-      pincode: pinCode,
-      state,
-      password
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setError('');
+
+    try {
+      await axios.post(`${baseUrl}/api/v1/user/register`, formData);
+      navigate('/login');
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.message || 'An error occurred');
+    }
   }
 
-    async function handleSubmit(e){
-        e.preventDefault();
-        setErrorPassword('');
-
-        console.log('form submit clicked')
-
-        try{
-            const response = await axios.post(`${baseUrl}/api/v1/user/register`, formData)
-            console.log(formData)
-            navigate('/login')
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
   return (
-    <div className='h-screen w-screen flex items-center justify-around bg-red-950'>
-        <div className='bg-black h-screen w-screen absolute bg-opacity-70'></div>
-        {!isSmallScreen && (<div>
-            <MagnetLines
-                rows={10}
-                columns={9}
-                containerSize="70vmin"
-                lineColor="tomato"
-                lineWidth="0.8vmin"
-                lineHeight="7vmin"
-                baseAngle={0}
-                style={{ margin: "2rem auto" }}
+    <div className='h-screen w-screen flex items-center justify-center bg-white text-black'>
+      <div className='w-full max-w-md p-8 space-y-6 bg-gray-100 rounded-lg shadow-lg'>
+        <h2 className='text-2xl font-bold text-center'>Register</h2>
+        <form onSubmit={handleSubmit} className='space-y-4'>
+          <div className='flex gap-4'>
+            <input 
+              type='text' 
+              placeholder='First Name' 
+              className='w-full px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-black' 
+              value={fName} 
+              onChange={(e) => setFName(e.target.value)} 
             />
-        </div>)}
-        <div className='relative flex flex-col items-end justify-around h-screen'>
-            <div className='flex flex-col items-center '>
-              <img src="/register.png" alt="" className='h-32 relative -top-4 z-10' />
-                
-              <form className='rounded-3xl' onSubmit={handleSubmit}> 
-                <SpotlightCard 
-                  className="border border-white px-20 pt-12 rounded-lg flex flex-col gap-6" 
-                  spotlightColor="rgba(255, 0, 0, 0.2)"
-                >
-                  <div className='flex sm:flex-row flex-col gap-4'>
-                    <input 
-                      type="text" 
-                      placeholder='First Name' 
-                      className='bg-transparent border-b border-b-white outline-none text-white font-semibold z-10' 
-                      value={fName} 
-                      onChange={(e) => setFName(e.target.value)} 
-                    />
-                    <input 
-                      type="text" 
-                      placeholder='Last Name' 
-                      className='bg-transparent border-b border-b-white outline-none text-white font-semibold z-10' 
-                      value={lName} 
-                      onChange={(e) => setLName(e.target.value)} 
-                    />
-                  </div>
-                  <input 
-                    type="text" 
-                    placeholder='Phone Number' 
-                    className='bg-transparent border-b border-b-white pb-2 outline-none text-white font-semibold' 
-                    value={phone} 
-                    onChange={(e) => setPhone(e.target.value)} 
-                  />
-                  <input 
-                    type="email" 
-                    placeholder='Email' 
-                    className='bg-transparent border-b border-b-white outline-none text-white font-semibold' 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                  />
-                  <div className='flex flex-col sm:flex-row gap-4'>
-                    <input 
-                      type="text" 
-                      placeholder='Pin Code' 
-                      className='bg-transparent border-b border-b-white outline-none text-white font-semibold' 
-                      value={pinCode} 
-                      onChange={(e) => setPincode(e.target.value)} 
-                    />
-                    <input 
-                      type="text" 
-                      placeholder='State' 
-                      className='bg-transparent border-b border-b-white outline-none text-white font-semibold' 
-                      value={state} 
-                      onChange={(e) => setState(e.target.value)} 
-                    />
-                  </div>
-                  {errorPassword && <p className='text-red-500 text-xs font-semibold'>{errorPassword}</p>}
-                  <input 
-                    type="password" 
-                    placeholder='Password' 
-                    className='bg-transparent border-b border-b-white outline-none text-white font-semibold' 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                  />
-                  <p className='text-white text-sm font-semibold cursor-default text-center relative top-5'>
-                    Already have an account? <Link to="/login" className='text-red-500 hover:underline cursor-pointer'>Login</Link>
-                  </p>
-                  <button 
-                    type="submit" 
-                    className="text-white py-2 font-semibold border border-white rounded-lg relative top-12 bg-[#150303] hover:bg-red-950 transition-all duration-300"
-                  >
-                    Submit
-                  </button>
-                </SpotlightCard>
-              </form>  
-            </div>
-            <Link to="/" className='text-white font-semibold border border-white py-2 rounded-full hover:text-[#070b19] hover:bg-white transition-all duration-300 w-28 flex justify-center'>Back</Link>
-        </div>
+            <input 
+              type='text' 
+              placeholder='Last Name' 
+              className='w-full px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-black' 
+              value={lName} 
+              onChange={(e) => setLName(e.target.value)} 
+            />
+          </div>
+          <input 
+            type='email' 
+            placeholder='Email' 
+            className='w-full px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-black' 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+          />
+          <input 
+            type='text' 
+            placeholder='Phone Number' 
+            className='w-full px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-black' 
+            value={phone} 
+            onChange={(e) => setPhone(e.target.value)} 
+          />
+          <div className='flex gap-4'>
+            <input 
+              type='text' 
+              placeholder='Pin Code' 
+              className='w-full px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-black' 
+              value={pinCode} 
+              onChange={(e) => setPincode(e.target.value)} 
+            />
+            <input 
+              type='text' 
+              placeholder='State' 
+              className='w-full px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-black' 
+              value={state} 
+              onChange={(e) => setState(e.target.value)} 
+            />
+          </div>
+          <input 
+            type='password' 
+            placeholder='Password' 
+            className='w-full px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-black' 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+          />
+          {error && <p className='text-red-500 text-sm'>{error}</p>}
+          <button type='submit' className='w-full px-4 py-2 font-semibold border border-black rounded-md bg-black text-white hover:bg-gray-800 transition-all duration-300'>Submit</button>
+        </form>
+        <p className='text-center text-gray-600 text-sm'>
+          Already have an account? <Link to='/login' className='text-black font-semibold hover:underline'>Login</Link>
+        </p>
+        <Link to='/' className='block text-center font-semibold border border-black py-2 rounded-md hover:bg-black hover:text-white transition-all duration-300'>Back</Link>
+      </div>
     </div>
-  )
+  );
 }
 
-export default Register
+export default Register;

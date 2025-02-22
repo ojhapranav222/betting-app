@@ -41,7 +41,7 @@ function BetCard() {
   return (
     <div className="mt-24 w-full sm:w-[40%] px-6 sm:px-8 h-screen pb-24">
       {/* Section Title */}
-      <h1 className="text-gray-400 text-left mb-6 font-bold text-2xl sm:text-3xl border-b pb-3 border-gray-700">
+      <h1 className="text-gray-800 text-left mb-6 font-bold text-2xl sm:text-3xl border-b pb-3 border-gray-300">
         My Bets
       </h1>
 
@@ -51,20 +51,20 @@ function BetCard() {
           betData.bets.map((bet, index) => (
             <div
               key={index}
-              className="bg-gray-900 p-4 rounded-lg shadow-md border border-gray-700"
+              className="bg-white p-5 rounded-lg shadow-lg border border-black"
             >
-              <p className="text-gray-300 text-sm">
+              <p className="text-gray-800 text-sm">
                 Match: <span className="font-bold">{bet.match_name}</span>
               </p>
-              <p className="text-gray-300 text-sm">
+              <p className="text-gray-800 text-sm">
                 Your Team: <span className="font-bold">{bet.team_name}</span>
               </p>
-              <p className="text-gray-300 text-sm">
+              <p className="text-gray-800 text-sm">
                 Opposing Team: <span className="font-bold">
                   {bet.team_name === bet.team_a ? bet.team_b : bet.team_a}
                 </span>
               </p>
-              <p className="text-gray-300 text-sm">
+              <p className="text-gray-800 text-sm">
                 Amount: <span className="font-bold">₹{bet.amount_bet}</span>
               </p>
               <p
@@ -85,7 +85,7 @@ function BetCard() {
             </div>
           ))
         ) : (
-          <p className="text-gray-400 text-center mt-6">
+          <p className="text-gray-600 text-center mt-6">
             Your Bet Slip is Empty
           </p>
         )}
