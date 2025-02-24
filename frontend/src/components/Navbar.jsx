@@ -62,16 +62,16 @@ function Navbar() {
 
   return (
     <div className="w-full bg-opacity-10 bg-black rounded-lg backdrop-blur-md h-[80px] flex sm:justify-between justify-around items-center sm:px-10 fixed top-0 z-[99]">
-      <h1 className="uppercase font-bold cursor-pointer text-white tracking-wider text-3xl">Nxt</h1>
+      <h1 className="uppercase font-bold cursor-pointer text-black tracking-wider text-3xl">Nxt</h1>
       {isLoggedIn ? (
         <div className='flex sm:gap-12 gap-8 items-center'>
-            {admin && (<Link to='/admin/users' className='text-xl font-semibold text-white cursor-pointer sm:px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Admin</Link>)}
-          {!isSmallScreen && <Link to='/games' className='sm:text-xl text-sm font-semibold text-white cursor-pointer sm:px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Bet Now</Link>}
+            {admin && (<Link to='/admin/users' className='text-xl font-semibold text-black cursor-pointer sm:px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Admin</Link>)}
+          {!isSmallScreen && <Link to='/games' className='sm:text-xl text-sm font-semibold text-black cursor-pointer sm:px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300'>Bet Now</Link>}
           <div className="relative">
-            <div className="text-white text-3xl cursor-pointer" onClick={toggleDrowWallet}>
+            <div className="text-black text-3xl cursor-pointer" onClick={toggleDrowWallet}>
               <IoWalletOutline />
             </div>
-            <span className="absolute -top-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+            <span className="absolute -top-3 bg-green-500 text-black text-xs px-2 py-1 rounded-full">
               ₹{user?.balance}
             </span>
           </div>
@@ -87,7 +87,7 @@ function Navbar() {
               </li>
             </ul>
           )}
-          <div className='text-white bg-gray-500 text-xl font-semibold h-5 w-5 flex items-center justify-center p-6 rounded-full cursor-pointer' onClick={toggleDropDown}> 
+          <div className='text-black bg-gray-500 text-xl font-semibold h-5 w-5 flex items-center justify-center p-6 rounded-full cursor-pointer' onClick={toggleDropDown}> 
             <p>{profileInitial}</p> 
           </div>
           {dropVisible && ( 
@@ -98,9 +98,9 @@ function Navbar() {
           )}
         </div>
       ) : (
-        <div className='text-white flex justify-between w-[50%] sm:w-[20%]'>
-          <Link to='/login' className='sm:text-xl font-semibold border border-white px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300 text-sm'>Login</Link>
-          <Link to='/register' className='sm:text-xl font-semibold border border-white px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300 text-sm'>Register</Link>
+        <div className='text-black flex justify-between w-[50%] sm:w-[20%]'>
+          <Link to='/login' className='sm:text-xl font-semibold border border-black px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300 text-sm'>Login</Link>
+          <Link to='/register' className='sm:text-xl font-semibold border border-black px-6 py-2 rounded-full hover:text-black hover:bg-white transition-all duration-300 text-sm'>Register</Link>
         </div>
       )}
     </div>
