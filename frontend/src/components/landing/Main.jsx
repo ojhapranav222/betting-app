@@ -9,7 +9,7 @@ function Main() {
 
   return (
     <div
-      className="relative w-full sm:h-screen h-[calc(100vh-16rem)] overflow-hidden flex flex-col"
+      className="relative w-full h-screen overflow-hidden flex flex-col"
     >
       <Navbar />
 
