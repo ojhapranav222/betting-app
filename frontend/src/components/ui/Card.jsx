@@ -9,7 +9,7 @@ function Card({ country1, country2, endTime, type, onBetClick, bet }) {
     function calculateTimeLeft() {
       if (!endTime) return { days: 0, hours: 0, minutes: 0, seconds: 0, isActive: false };
 
-      const end = parseLocalDate(endTime);
+      const end = new Date(endTime);
       const now = new Date();
       const difference = end - now - 19800000;
 
