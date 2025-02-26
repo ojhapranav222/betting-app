@@ -7,6 +7,9 @@ function Events() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [events, setEvents] = useState(null);
+  const date = new Date();
+
+  console.log(date)
 
   function openModal(event) {
     setSelectedEvent(event);
@@ -26,7 +29,7 @@ function Events() {
   }, []);
 
   return (
-    <div className="mt-24 w-full sm:w-[40%] px-6 sm:px-8 h-screen overflow-y-auto">
+    <div className="mt-24 w-full sm:w-[40%] px-6 sm:px-8 h-[calc(100vh-8rem)] overflow-y-scroll">
       <h1 className="text-gray-400 text-left mb-6 font-bold text-2xl sm:text-3xl border-b pb-3 border-gray-700">
         Upcoming & Live Matches
       </h1>

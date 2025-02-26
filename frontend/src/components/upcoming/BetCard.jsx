@@ -39,7 +39,7 @@ function BetCard() {
   }
 
   return (
-    <div className="mt-24 w-full sm:w-[40%] px-6 sm:px-8 h-screen pb-24">
+    <div className="mt-24 w-full sm:w-[40%] px-6 sm:px-8 h-[calc(100vh-8rem)] overflow-y-scroll pb-24">
       {/* Section Title */}
       <h1 className="text-gray-800 text-left mb-6 font-bold text-2xl sm:text-3xl border-b pb-3 border-gray-300">
         My Bets

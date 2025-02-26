@@ -22,7 +22,7 @@ function QuickBetModal({ event, onClose }) {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
-
+            console.log(response.data)
             alert(response.data.message);
             onClose(); // Close modal after successful bet
         } catch (err) {

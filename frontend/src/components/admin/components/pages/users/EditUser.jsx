@@ -207,7 +207,7 @@ const EditUser = () => {
                             </Card>
                             <Card>
                             <CardContent>
-                                <CardHeader className='font-bold h-20 overflow-scroll'>Deposit History</CardHeader>
+                                <CardHeader className='font-bold h-20'>Deposit History</CardHeader>
                                     <Table>
                                         <TableHeader className='border-b-2'>
                                         <TableRow>
