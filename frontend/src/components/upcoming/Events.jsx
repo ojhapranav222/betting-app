@@ -7,15 +7,11 @@ function Events() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [events, setEvents] = useState(null);
-  const date = new Date();
-
-  console.log(date)
 
   function openModal(event) {
     setSelectedEvent(event);
     setIsModalOpen(true);
   }
-
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
