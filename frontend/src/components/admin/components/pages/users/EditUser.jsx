@@ -71,17 +71,6 @@ const EditUser = () => {
         }
     }
 
-    async function handleSave(){
-        try{
-            await axios.patch(`http://localhost:3000/api/user/${id}`, userData);
-            setIsEditing(false);
-            alert("User data updated successfully");
-        }catch(err){
-            console.error(err);
-            alert("User data was not updated due to an error");
-        }
-    }
-
     async function handleAdd() {
         if (add !== '') {
           await axios.post(`${baseUrl}/api/v1/wallet/add`, {
@@ -125,6 +114,15 @@ const EditUser = () => {
         }
         fetchData();
       };
+
+      async function handleSave() {
+        if (add) {
+            await handleAdd();
+        }
+        if (reduce) {
+            await handleReduce();
+        }
+    }    
     
       function handleKeyPress(event){
         if (event.key === 'Enter') {
@@ -154,7 +152,7 @@ const EditUser = () => {
                             <h1 className="text-2xl font-semibold">User Information</h1>
                         </div>
                         <div className='w-auto flex justify-around'>
-                        <Link to="/user">
+                        <Link to="/admin/users">
                             <Button
                             variant="secondary"
                             className="w-auto bg-[white] text-[#e0382a] border-2 mr-3"
@@ -232,7 +230,7 @@ const EditUser = () => {
                                                 {order.status}
                                                 </span>
                                             </TableCell>
-                                            <TableCell>${order.amount}</TableCell>
+                                            <TableCell>₹{order.amount}</TableCell>
                                             
                                             <TableCell>{order.created_at.split("T")[0]}</TableCell>
                                             </TableRow>

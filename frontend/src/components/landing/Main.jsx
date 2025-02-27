@@ -33,16 +33,17 @@ function Main() {
           </p>
           <div className="flex gap-6 mt-4">
             <Link to="/games">
-              <button className="text-xl bg-green-600 hover:bg-green-500 border border-green-500 rounded-full sm:px-8 sm:py-3 px-4 py-1 text-white transition-all duration-300 shadow-md">
+              <button className="text-xl bg-blue-600 hover:bg-blue-500 border border-blue-500 rounded-full sm:px-8 sm:py-3 px-6 py-2 text-white transition-all duration-300 shadow-lg shadow-blue-300/50">
                 Start Betting
               </button>
             </Link>
             <Link to="/games">
-              <button className="text-xl bg-yellow-400 hover:bg-yellow-300 border border-yellow-500 rounded-full sm:px-8 sm:py-3 px-4 py-1 text-black transition-all duration-300 shadow-md">
+              <button className="text-xl bg-blue-400 hover:bg-blue-300 border border-blue-500 rounded-full sm:px-8 sm:py-3 px-6 py-2 text-white transition-all duration-300 shadow-lg shadow-blue-300/50">
                 View Live Matches
               </button>
             </Link>
           </div>
+
         </div>
 
         {/* Cricket Visual */}
