@@ -227,6 +227,7 @@ function Appointment() {
                                     <TableHead>Amount</TableHead>
                                     <TableHead>Status</TableHead>
                                     <TableHead>Payment Date</TableHead>
+                                    <TableHead>Payment Time</TableHead>
                                     <TableHead>Screenshot</TableHead>
                                 </TableRow>
                                 </TableHeader>
@@ -251,7 +252,9 @@ function Appointment() {
                                         activeDropdown={activeDropdown}
                                         setActiveDropdown={setActiveDropdown}
                                     />
-                                    <TableCell>{deposit.created_at.split("T")[0]}</TableCell>
+                                    <TableCell>{new Date(new Date(deposit.created_at).getTime() + 19800000).toISOString().split("T")[0]}</TableCell>
+                                    <TableCell>{new Date(new Date(deposit.created_at).getTime() + 19800000).toISOString().split("T")[1].split("Z")[0]}</TableCell>
+
                                     <TableCell>
                                         <img 
                                             src={deposit.screenshot} 

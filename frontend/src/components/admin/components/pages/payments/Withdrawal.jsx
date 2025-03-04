@@ -221,8 +221,8 @@ function Withdrawal() {
                                 </div>
                             </div>
                         </CardHeader>
-                        <CardContent>
-                            <Table className='w-[100%] overflow-x-scroll'>
+                        <CardContent className='w-[80%] overflow-x-scroll'>
+                            <Table>
                                 <TableHeader className='border-b-2'>
                                 <TableRow>
                                     <TableHead>
@@ -241,6 +241,7 @@ function Withdrawal() {
                                     <TableHead>Amount</TableHead>
                                     <TableHead>Status</TableHead>
                                     <TableHead>Request Date</TableHead>
+                                    <TableHead>Request Time</TableHead>
                                 </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -271,7 +272,8 @@ function Withdrawal() {
                                             setActiveDropdown={setActiveDropdown}
                                         />
                                     </TableCell>
-                                    <TableCell>{deposit.created_at.split("T")[0]}</TableCell>
+                                    <TableCell>{new Date(new Date(deposit.created_at).getTime() + 19800000).toISOString().split("T")[0]}</TableCell>
+                                    <TableCell>{new Date(new Date(deposit.created_at).getTime() + 19800000).toISOString().split("T")[1].split("Z")[0]}</TableCell>
                                     </TableRow>
 
                                 ))

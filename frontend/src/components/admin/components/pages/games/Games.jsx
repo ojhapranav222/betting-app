@@ -40,13 +40,38 @@ function WinnerCell({ game, activeDropdown, setActiveDropdown }) {
     }
   };
 
+  async function cancelMatchHandler (gameId) {
+    try {
+        const { data } = await axios.patch(
+            `${baseUrl}/api/v1/game/cancel`,
+            { gameId }
+        );
+
+        if (data.success) {
+            alert("Match canceled and bets refunded.");
+            // Optionally refresh match list or UI state
+        } else {
+            alert("Error cancelling match.");
+        }
+    } catch (error) {
+        console.error("Cancel match error:", error);
+        alert("Something went wrong.");
+    }
+};
+
   return (
     <TableCell>
       <div className="relative">
         {winner ? (
           // Display Winner Team Name
-          <span className="bg-yellow-500 p-2 rounded-md text-white">
-            {winner === "team_a" ? game.team_a : game.team_b}
+          <span className={`p-2 rounded-md ${
+            winner === "team_a" ? "bg-yellow-500 text-white" 
+            : winner === "team_b" ? "bg-blue-500 text-white" 
+            : "bg-transparent text-red-700 font-bold"
+          }`}>
+            {winner === "team_a" ? game.team_a 
+            : winner === "team_b" ? game.team_b
+            : "Match Cancelled"}
           </span>
         ) : (
           // Dropdown for Selecting Winner
@@ -62,7 +87,7 @@ function WinnerCell({ game, activeDropdown, setActiveDropdown }) {
 
         {/* Dropdown (only shows when match is undecided & clicked) */}
         {activeDropdown === game.id && !winner && (
-          <div className="absolute top-full left-0 mt-2 w-32 bg-gray-800 shadow-lg rounded-md">
+          <div className="absolute z-50 top-full left-0 mt-2 w-32 bg-gray-800 shadow-lg rounded-md">
             <button
               className="block w-full text-left px-4 py-2 text-white hover:bg-green-600"
               onClick={() => handleWinnerSelection("team_a")}
@@ -75,6 +100,10 @@ function WinnerCell({ game, activeDropdown, setActiveDropdown }) {
             >
               🏆 {game.team_b}
             </button>
+            <button
+              className="block w-full text-left px-4 py-2 text-white hover:bg-red-600"
+              onClick={() => cancelMatchHandler(game.id)}  
+            >❌ Cancel</button>
           </div>
         )}
       </div>
@@ -311,7 +340,7 @@ async function handleSave(event, gameId) {
               <TableCell onClick={() => handleEdit(game)}>{game.team_b}</TableCell>
               <TableCell onClick={() => handleEdit(game)}>{game.match_name}</TableCell>
               <TableCell onClick={() => handleEdit(game)}>
-                {new Date(game.end_time).toISOString().replace("T", ", ").split(".")[0]}
+                {new Date(new Date(game.end_time).getTime() + 19800000).toISOString().replace("T", ", ").split(".")[0]}
               </TableCell>
               <TableCell onClick={() => handleEdit(game)}>{game.additional_notes}</TableCell>
               <TableCell>
