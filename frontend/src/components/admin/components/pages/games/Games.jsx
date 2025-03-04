@@ -44,7 +44,12 @@ function WinnerCell({ game, activeDropdown, setActiveDropdown }) {
     try {
         const { data } = await axios.patch(
             `${baseUrl}/api/v1/game/cancel`,
-            { gameId }
+            { gameId },
+            {
+              headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+              }
+            }
         );
 
         if (data.success) {
