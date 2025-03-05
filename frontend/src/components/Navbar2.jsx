@@ -145,6 +145,7 @@ function Navbar2() {
           <>
             {admin && <Link to="/admin/users" className="text-lg font-semibold text-black">Admin</Link>}
             <Link to="/games" className="text-lg font-semibold text-black">Bet Now</Link>
+            <Link to="/bets" className='text-lg font-semibold text-black'>My Bets</Link>
             <Link to="/history" className="text-lg font-semibold text-black">History</Link>
             <Link to="/deposit" className="text-lg font-semibold text-black">Deposit</Link>
             <Link to="/withdraw" className="text-lg font-semibold text-black">Withdraw</Link>

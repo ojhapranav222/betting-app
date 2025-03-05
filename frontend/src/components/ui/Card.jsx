@@ -2,47 +2,23 @@ import React, { useEffect, useState } from "react";
 import { IoIosTimer } from "react-icons/io";
 
 function Card({ country1, country2, endTime, type, onBetClick, bet }) {
-  const [timeLeft, setTimeLeft] = useState({});
-  const [betActive, setBetActive] = useState(bet);
+  const [betActive, setBetActive] = useState(false);
 
   useEffect(() => {
-    function calculateTimeLeft() {
-      if (!endTime) return { days: 0, hours: 0, minutes: 0, seconds: 0, isActive: false };
+    const checkBetStatus = () => {
+      const now = new Date().getTime();
+      const betEndTime = new Date(endTime).getTime();
+      setBetActive(now < betEndTime);
+    };
 
-      const end = new Date(endTime);
-      const now = new Date();
-      const difference = end - now - 19800000 ;
+    checkBetStatus();
+    const interval = setInterval(checkBetStatus, 1000);
 
-      if (difference > 0) {
-        return {
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((difference / (1000 * 60)) % 60),
-          seconds: Math.floor((difference / 1000) % 60),
-          isActive: true,
-        };
-      } else {
-        return { days: 0, hours: 0, minutes: 0, seconds: 0, isActive: false };
-      }
-    }
-
-    setTimeLeft(calculateTimeLeft());
-
-    const timer = setInterval(() => {
-      const newTime = calculateTimeLeft();
-      setTimeLeft((prevTime) => (JSON.stringify(prevTime) !== JSON.stringify(newTime) ? newTime : prevTime));
-
-      if (!newTime.isActive) {
-        setBetActive(false);
-        clearInterval(timer);
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
+    return () => clearInterval(interval);
   }, [endTime]);
 
   return (
-    <div className={`bg-white border border-gray-300 rounded-2xl p-6 shadow-lg transition ${
+    <div className={`bg-yellow-50 border border-gray-300 rounded-2xl p-6 shadow-lg transition ${
       !betActive ? "opacity-50 cursor-not-allowed" : ""
     }`}>
       <div className="flex justify-between items-center">
@@ -57,29 +33,13 @@ function Card({ country1, country2, endTime, type, onBetClick, bet }) {
 
       <div className="mt-4 flex flex-col items-center">
         <p className="text-gray-500 flex items-center gap-2 text-sm">
-          <IoIosTimer className="text-gray-700 text-lg" /> Bet Ends In:
+          <IoIosTimer className="text-gray-700 text-lg" /> Bet End Date:{" "}
+          <span className="font-semibold">{new Date(endTime).toISOString().split("T")[0]}</span>
         </p>
-
-        <div className="mt-2 flex justify-center gap-3">
-          {timeLeft?.days > 0 && (
-            <div className="bg-gray-800 text-white p-2 rounded-lg text-center w-12">
-              <p className="text-xl font-bold">{timeLeft.days}</p>
-              <p className="text-sm">Days</p>
-            </div>
-          )}
-          <div className="bg-gray-800 text-white p-2 rounded-lg text-center w-12">
-            <p className="text-xl font-bold">{timeLeft.hours}</p>
-            <p className="text-sm">Hrs</p>
-          </div>
-          <div className="bg-gray-800 text-white p-2 rounded-lg text-center w-12">
-            <p className="text-xl font-bold">{timeLeft.minutes}</p>
-            <p className="text-sm">Min</p>
-          </div>
-          <div className="bg-gray-800 text-white p-2 rounded-lg text-center w-12">
-            <p className="text-xl font-bold">{timeLeft.seconds}</p>
-            <p className="text-sm">Sec</p>
-          </div>
-        </div>
+        <p className="text-gray-500 flex items-center gap-2 text-sm">
+          <IoIosTimer className="text-gray-700 text-lg" /> Bet End Time:{" "}
+          <span className="font-semibold">{new Date(endTime).toISOString().split("T")[1].split(".")[0]}</span>
+        </p>
       </div>
 
       <div className="mt-4">

@@ -28,6 +28,7 @@ import AddAccount from './components/admin/components/pages/payments/AddAccount'
 import PrivateRoute from './components/auth/PrivateRoute'
 import AdminRoute from './components/auth/AdminRoute'
 import History from './components/payments/History'
+import MobileMyBet from './components/upcoming/MobileMyBet'
 
 axios.defaults.withCredentials = true;
 
@@ -48,6 +49,7 @@ function App() {
           <Route path='/change-password' element={<Password />} />
           <Route path='/transactions' element={<Transactions />} />
           <Route path='/history' element={<History />} />
+          <Route path='/bets' element={<MobileMyBet />} />
         </Route>
         <Route element={<AdminRoute />}>
           <Route path='/admin/dashboard' element={<Dashboard />} />
