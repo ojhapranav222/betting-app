@@ -345,7 +345,7 @@ async function handleSave(event, gameId) {
               <TableCell onClick={() => handleEdit(game)}>{game.team_b}</TableCell>
               <TableCell onClick={() => handleEdit(game)}>{game.match_name}</TableCell>
               <TableCell onClick={() => handleEdit(game)}>
-                {new Date(new Date(game.end_time).getTime() + 19800000).toISOString().replace("T", ", ").split(".")[0]}
+                {game.end_time.replace("T", ", ").split(".")[0]}
               </TableCell>
               <TableCell onClick={() => handleEdit(game)}>{game.additional_notes}</TableCell>
               <TableCell>
