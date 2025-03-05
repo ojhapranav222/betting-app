@@ -11,7 +11,7 @@ function Card({ country1, country2, endTime, type, onBetClick, bet }) {
 
       const end = new Date(endTime);
       const now = new Date();
-      const difference = end - now ;
+      const difference = end - now - 19800000 ;
 
       if (difference > 0) {
         return {
