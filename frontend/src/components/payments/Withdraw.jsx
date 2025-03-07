@@ -17,8 +17,7 @@ function WithdrawalForm() {
   function isWithinWorkingHours() {
     const now = new Date();
     const hour = now.getHours();
-    const day = now.getDay();
-    return day >= 1 && day <= 5 && hour >= 10 && hour < 24;
+    return hour >= 10 && hour < 20;
   }
 
   async function handleWithdraw() {
@@ -28,7 +27,7 @@ function WithdrawalForm() {
     }
 
     if (!isWithinWorkingHours()) {
-      alert("Withdrawal request can only be made between 10 AM to 8 PM, Mon to Fri.");
+      alert("Withdrawal request can only be made between 10 AM to 8 PM.");
       return;
     }
 

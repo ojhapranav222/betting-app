@@ -161,6 +161,7 @@ function WalletTransactions() {
                                     <TableHead>Amount</TableHead>
                                     <TableHead>Status</TableHead>
                                     <TableHead>Payment Date</TableHead>
+                                    <TableHead>Payment Time</TableHead>
                                     <TableHead>Category</TableHead>
                                 </TableRow>
                                 </TableHeader>
@@ -194,6 +195,7 @@ function WalletTransactions() {
                                         </span>
                                     </TableCell>
                                     <TableCell>{deposit.created_at.split("T")[0]}</TableCell>
+                                    <TableCell>{deposit.created_at.split("T")[1].split("Z")[0].split(".")[0]}</TableCell>
                                     <TableCell>
                                         {deposit.transaction_type}
                                     </TableCell>

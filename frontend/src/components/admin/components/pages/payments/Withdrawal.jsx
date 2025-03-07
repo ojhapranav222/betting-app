@@ -272,8 +272,8 @@ function Withdrawal() {
                                             setActiveDropdown={setActiveDropdown}
                                         />
                                     </TableCell>
-                                    <TableCell>{new Date(new Date(deposit.created_at).getTime() + 19800000).toISOString().split("T")[0]}</TableCell>
-                                    <TableCell>{new Date(new Date(deposit.created_at).getTime() + 19800000).toISOString().split("T")[1].split("Z")[0]}</TableCell>
+                                    <TableCell>{new Date(new Date(deposit.created_at).getTime()).toISOString().split("T")[0]}</TableCell>
+                                    <TableCell>{new Date(new Date(deposit.created_at).getTime()).toISOString().split("T")[1].split("Z")[0]}</TableCell>
                                     </TableRow>
 
                                 ))
