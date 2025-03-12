@@ -30,9 +30,9 @@ function Events() {
         Upcoming & Live Matches
       </h1>
       <div className="flex flex-col gap-4 pb-24">
-  {events?.games?.filter(event => event.bet && new Date(event.end_time) > new Date()).length > 0 ? (
+  {events?.games?.filter(event => event.bet && new Date(event.end_time) - 19800000 > new Date()).length > 0 ? (
     events.games
-      .filter(event => event.bet && new Date(event.end_time) > new Date())
+      .filter(event => event.bet && new Date(event.end_time) - 19800000 > new Date())
       .map((event, index) => (
         <Card
           key={event.id || index}
